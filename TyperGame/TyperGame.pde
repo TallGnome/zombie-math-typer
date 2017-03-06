@@ -13,6 +13,7 @@ void setup(){
   zombies.add(new Zombie(50));
   starttime = millis();
   spawnrate = 2000; //ms
+  String arxidi = "eimai arxidi";
 }
 
 void draw(){

@@ -7,14 +7,14 @@ ArrayList<Zombie> zombies;
 int starttime, currtime, spawnrate;
 
 void setup(){
-  size(820,640); 
+  size(668,800); 
   frameRate(60);
   zombies = new ArrayList<Zombie>();
   zombies.add(new Zombie(50));
   starttime = millis();
-  spawnrate = 2000; //ms
-  String arxidi = "eimai arxidi";
+  spawnrate = 3000; //ms
 }
+
 
 void draw(){
   
@@ -33,7 +33,7 @@ void draw(){
   
   if(currtime - starttime >= spawnrate)
   {
-    zombies.add(new Zombie((int) random(30,100)));
+    zombies.add(new Zombie((int) random(50,100)));
     starttime = currtime;
   }
 }

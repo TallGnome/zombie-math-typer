@@ -6,7 +6,7 @@
 Zombie test;
 
 void setup(){
-  size(600,800); 
+  size(820,640); 
   frameRate(60);
   test = new Zombie(50); //Testing a "zombie" with 50px size.
 }

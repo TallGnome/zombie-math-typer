@@ -7,7 +7,7 @@ ArrayList<Zombie> zombies;
 int starttime, currtime, spawnrate;
 
 void setup(){
-  size(600,800); 
+  size(820,640); 
   frameRate(60);
   zombies = new ArrayList<Zombie>();
   zombies.add(new Zombie(50));

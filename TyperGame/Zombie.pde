@@ -11,8 +11,8 @@ public class Zombie
     x = (int) random(0+s,width-s); //Zombie starts in a random horizontal position from the top of the screen.
     y = s; 
     size = s;
-    first = (int) random(10,100);
-    second = (int) random(10,100);
+    first = (int) random(1,9);
+    second = (int) random(1,9);
     equation = first + " + " + second;
     solution = first + second;
     txtSize = 20;
@@ -20,7 +20,7 @@ public class Zombie
   
   void move()
   {
-    y += (int) random(1,3);
+    y += (int) random(1,4);
     //size += 1;
   }
   

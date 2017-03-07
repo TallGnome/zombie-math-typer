@@ -6,7 +6,7 @@ public class Zombie
   
   Zombie(int lvl)
   {
-    size = (int) random(50, 100);
+    size = (int) random(40, 80);
     speed = getSpeed(lvl);
     picture = loadImage("assets/zombie.png");
     picture.resize(size,size);
@@ -23,18 +23,12 @@ public class Zombie
   void move()
   {
     y += speed;
-    //size += 1;
   }
   
   void draw()
   {
-    /*pushStyle();
-    fill(color(#418e2c));
-    noStroke();
-    ellipse(x,y,size,size);
-    popStyle();*/
     image(picture, x-size/2, y-size/2);
-    String txt = equation; //TODO: Populate array String[] equations, "Shuffle" it, Traverse array and use every equation once.
+    String txt = equation;
     textSize(txtSize);
     text(txt, x - textWidth(txt)/2, y + size/2+txtSize);
   }

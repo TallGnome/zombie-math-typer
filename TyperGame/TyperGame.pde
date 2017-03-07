@@ -1,25 +1,21 @@
-/**
- *   TyperGame
- *   
- */
-
 //import processing.sound.*;
 
 //SoundFile file;
 ArrayList<Zombie> zombies;
-int starttime, currtime, spawnrate, score, level;
-String typing;
+int starttime, currtime, spawnrate, score, level, textsize, streak;
+String typing, txt;
 
 void setup() {
-  size(668, 800); 
+  size(700, 800); 
   frameRate(60);
   level = 1;
   zombies = new ArrayList<Zombie>();
-  zombies.add(new Zombie(level));
   starttime = millis();
   spawnrate = 3000; //ms
-  typing = "";
+  typing = ""; //What the user is writing 
   score = 0;
+  textsize = 20; //Size of texts such as score, levels etc.
+  streak = 0; //Solving streak
 }
 
 
@@ -28,13 +24,18 @@ void draw() {
   noCursor();
   background(0); //Black
 
-  //Bad programming fix VVVVV
+  //Bad programming?? fix VVVVV
   if(score == 10 && level == 1)
   {
     level++;
-    spawnrate -= 1000;  
+    spawnrate -= 500;  
   }
-  if(score == 20 && level == 2)
+  else if(score == 20 && level == 2)
+  {
+    level++;  
+    spawnrate -= 500;
+  }
+  else if(score == 30 && level == 3)
   {
     level++;  
     spawnrate -= 500;
@@ -43,22 +44,40 @@ void draw() {
   //Score text
   pushStyle();
   fill(color(255));
-  textSize(20);
-  text("Score: " + Integer.toString(score), width - textWidth("Score: " + Integer.toString(score))-10,25); 
+  textSize(textsize);
+  txt = "Score: " + Integer.toString(score);
+  text(txt, width - textWidth(txt)-width/70 , height/40); 
+  popStyle();
+  
+  //Streak text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  if(streak>=5)
+  {
+    txt = "Press 'c' to clear screen";
+  }
+  else
+  {
+    txt = "Streak: " + Integer.toString(streak);
+  }
+  text(txt, width-textWidth(txt)-10, height/40 + textsize); 
   popStyle();
   
   //Level text
   pushStyle();
   fill(color(255));
-  textSize(20);
-  text("Level: " + Integer.toString(level), width - textWidth("Level: " + Integer.toString(level))-10,height - 20); 
+  textSize(textsize);
+  txt = "Level: " + Integer.toString(level);
+  text(txt, width-textWidth(txt)-width/70, height - textsize+5); 
   popStyle();
   
   //Spawn rate text
   pushStyle();
   fill(color(255));
-  textSize(20);
-  text("Spawn rate: " + Integer.toString(spawnrate/1000) + "s", width - textWidth("Spawn rate: " + Integer.toString(spawnrate/1000) + "s")-10,height - 45); 
+  textSize(textsize);
+  txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
+  text(txt, width-textWidth(txt)-10, height - 2*textsize); 
   popStyle();
 
   for (int i=0; i<zombies.size (); i++)
@@ -138,7 +157,17 @@ void keyReleased()
     { 
       typing += "9";
     } 
-    break;  
+    break; 
+  case 'c':
+    { 
+      if(streak>=5)
+      {
+        score += zombies.size();
+        zombies = new ArrayList<Zombie>();
+        streak = 0;
+      }
+    } 
+  break;   
   case ENTER:
     {
       if (typing.length() > 0)
@@ -146,10 +175,12 @@ void keyReleased()
         if (checkAnswer(typing))
         {
           score++;
+          streak++;
           //file = new SoundFile(this, "correct.mp3");
           //file.play();
         } else
         {
+          streak = 0;
           //file = new SoundFile(this, "wrong.mp3");
           //file.play();
         }

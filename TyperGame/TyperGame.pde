@@ -7,21 +7,19 @@
 
 //SoundFile file;
 ArrayList<Zombie> zombies;
-//ArrayList<Integer> solutions;
 int starttime, currtime, spawnrate, score, level;
 String typing;
 
 void setup() {
   size(668, 800); 
   frameRate(60);
+  level = 1;
   zombies = new ArrayList<Zombie>();
-  zombies.add(new Zombie(50));
-  //solutions = new ArrayList<Integer>();
+  zombies.add(new Zombie(level));
   starttime = millis();
   spawnrate = 3000; //ms
   typing = "";
   score = 0;
-  level = 1;
 }
 
 
@@ -42,17 +40,25 @@ void draw() {
     spawnrate -= 500;
   }
   
-
+  //Score text
   pushStyle();
   fill(color(255));
   textSize(20);
   text("Score: " + Integer.toString(score), width - textWidth("Score: " + Integer.toString(score))-10,25); 
   popStyle();
   
+  //Level text
   pushStyle();
   fill(color(255));
   textSize(20);
   text("Level: " + Integer.toString(level), width - textWidth("Level: " + Integer.toString(level))-10,height - 20); 
+  popStyle();
+  
+  //Spawn rate text
+  pushStyle();
+  fill(color(255));
+  textSize(20);
+  text("Spawn rate: " + Integer.toString(spawnrate/1000) + "s", width - textWidth("Spawn rate: " + Integer.toString(spawnrate/1000) + "s")-10,height - 45); 
   popStyle();
 
   for (int i=0; i<zombies.size (); i++)
@@ -66,9 +72,8 @@ void draw() {
 
   if (currtime - starttime >= spawnrate)
   {
-    Zombie newzombie = new Zombie((int) random(50, 100));
+    Zombie newzombie = new Zombie(level);
     zombies.add(newzombie);
-    //solutions.add(newzombie.solution);
     starttime = currtime;
   }
 

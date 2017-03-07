@@ -1,26 +1,28 @@
 public class Zombie
 {
-  int x, y, size, first, second, solution, txtSize;
+  int x, y, size, first, second, solution, speed, txtSize, level;
   String equation;
   PImage picture;
   
-  Zombie(int s)
+  Zombie(int lvl)
   {
+    size = (int) random(50, 100);
+    speed = getSpeed(lvl);
     picture = loadImage("assets/zombie.png");
-    picture.resize(s,s);
-    x = (int) random(0+s,width-s); //Zombie starts in a random horizontal position from the top of the screen.
-    y = s; 
-    size = s;
+    picture.resize(size,size);
+    x = (int) random(0+size,width-size); //Zombie starts in a random horizontal position from the top of the screen.
+    y = size; 
     first = (int) random(1,9);
     second = (int) random(1,9);
     equation = first + " + " + second;
     solution = first + second;
     txtSize = 20;
+    level = lvl;
   }
   
   void move()
   {
-    y += (int) random(1,4);
+    y += speed;
     //size += 1;
   }
   
@@ -37,5 +39,31 @@ public class Zombie
     text(txt, x - textWidth(txt)/2, y + size/2+txtSize);
   }
   
-  
+  int getSpeed(int lvl)
+  {
+    switch (lvl)
+    {
+      case 1:
+      { 
+        speed = (int) random(1,4);
+      } 
+      break;
+      case 2:
+      { 
+        speed = (int) random(1,5);
+      } 
+      break;
+      case 3:
+      { 
+        speed = (int) random(2,5);
+      } 
+      break;  
+      default: 
+        break;
+    }
+    return speed;
+  }
 }
+  
+  
+

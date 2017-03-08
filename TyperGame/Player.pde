@@ -1,11 +1,13 @@
-public class Player extends Entity{
+public class Player{
  
   int velX, velY;
+  int size;
+  
   boolean holdingW, holdingA, holdingS, holdingD;
   
  
  Player(int s){
-  super(s);
+  this.size = s;
   this.x = width/2;
   this.y = height/2;
   

@@ -1,8 +1,8 @@
 public class Player{
  
   int velX, velY;
-  int size;
-  
+  float size;
+  float x,y;
   boolean holdingW, holdingA, holdingS, holdingD;
   
  

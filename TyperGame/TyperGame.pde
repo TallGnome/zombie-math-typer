@@ -1,13 +1,24 @@
 //import processing.sound.*;
-
+import java.util.Map;
 //SoundFile file;
 ArrayList<Zombie> zombies;
 int starttime, currtime, spawnrate, score, level, textsize, streak;
 String typing, txt;
 
+HashMap<String, Integer> hash;
+
+Equation eq;
+
 void setup() {
   size(700, 800); 
   frameRate(60);
+  eq = new Equation();
+  hash = new HashMap<String, Integer>();
+  hash = eq.nextEquation(5, 5);
+  for (Map.Entry me : hash.entrySet()) {
+    print(me.getKey() + " is ");
+    println(me.getValue());
+  }
   level = 1;
   zombies = new ArrayList<Zombie>();
   starttime = millis();

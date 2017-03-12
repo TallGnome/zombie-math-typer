@@ -13,7 +13,7 @@ void setup() {
   starttime = millis();
   spawnrate = 3000; //ms
   typing = ""; //What the user is writing 
-  score = 0;
+  score = 8;
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Solving streak
 }

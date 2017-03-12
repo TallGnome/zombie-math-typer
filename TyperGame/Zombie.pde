@@ -14,8 +14,17 @@ public class Zombie
     y = size; 
     first = (int) random(1,9);
     second = (int) random(1,9);
-    equation = first + " + " + second;
-    solution = first + second;
+    if(lvl == 1)
+    {
+      equation = first + " + " + second;
+      solution = first + second;
+    }
+    else
+    {
+      equation = first + " * " + second;
+      solution = first * second;
+    }
+    
     txtSize = 20;
     level = lvl;
   }

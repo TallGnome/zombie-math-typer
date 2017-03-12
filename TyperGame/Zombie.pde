@@ -1,10 +1,11 @@
 public class Zombie
 {
-  int x, y, size, first, second, solution, speed, txtSize, level;
+  //int first, second;
+  int x, y, size, solution, speed, txtSize, level;
   String equation;
   PImage picture;
   
-  Zombie(int lvl)
+  Zombie(int lvl, String eq, int result)
   {
     size = (int) random(40, 80);
     speed = getSpeed(lvl);
@@ -12,7 +13,9 @@ public class Zombie
     picture.resize(size,size);
     x = (int) random(0+size,width-size); //Zombie starts in a random horizontal position from the top of the screen.
     y = size; 
-    first = (int) random(1,9);
+    equation = eq;
+    solution = result;
+    /*first = (int) random(1,9);
     second = (int) random(1,9);
     if(lvl == 1)
     {
@@ -23,7 +26,9 @@ public class Zombie
     {
       equation = first + " * " + second;
       solution = first * second;
-    }
+    }*/
+    
+    
     
     txtSize = 20;
     level = lvl;

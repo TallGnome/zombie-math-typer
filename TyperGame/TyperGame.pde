@@ -1,33 +1,35 @@
 //import processing.sound.*;
 import java.util.Map;
+
 //SoundFile file;
 ArrayList<Zombie> zombies;
-int starttime, currtime, spawnrate, score, level, textsize, streak;
+int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator;
 String typing, txt;
-
+Player player;
 HashMap<String, Integer> hash;
-
 Equation eq;
+String[] equations;
+int[] results;
 
 void setup() {
   size(700, 800); 
   frameRate(60);
-  eq = new Equation();
-  hash = new HashMap<String, Integer>();
-  hash = eq.nextEquation(5, 5);
-  for (Map.Entry me : hash.entrySet()) {
-    print(me.getKey() + " is ");
-    println(me.getValue());
-  }
   level = 1;
+  zombiesinlevel = 8;
   zombies = new ArrayList<Zombie>();
+  player = new Player(50);
   starttime = millis();
-  spawnrate = 3000; //ms
-  typing = ""; //What the user is writing 
-  score = 8;
+  spawnrate = 4000; //ms
+  typing = ""; //Used for user typing display.
+  score = 0; //Initial score.
   textsize = 20; //Size of texts such as score, levels etc.
-  streak = 0; //Solving streak
+  streak = 0; //Correct guesses in a row.
+  streakgoal = 10; //What value streak count must reach to be able to clear screen.
+   
+  createArrays();
+   
 }
+
 
 
 void draw() {
@@ -35,21 +37,32 @@ void draw() {
   noCursor();
   background(0); //Black
 
+  //player.draw();
+
   //Bad programming?? fix VVVVV
-  if(score == 10 && level == 1)
+  if(zombiesinlevel == 0)
   {
-    level++;
-    spawnrate -= 500;  
-  }
-  else if(score == 20 && level == 2)
-  {
-    level++;  
-    spawnrate -= 500;
-  }
-  else if(score == 30 && level == 3)
-  {
-    level++;  
-    spawnrate -= 500;
+    if(level == 1)
+    {
+      level++;
+      zombiesinlevel = 12;
+      spawnrate -= 500;
+      createArrays();  
+    }
+    else if(level == 2)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate -= 500;
+      createArrays();
+    }
+    else if(level == 3)
+    {
+      level++;  
+      zombiesinlevel = 18;
+      spawnrate -= 500;
+      createArrays();
+    } 
   }
   
   //Score text
@@ -64,7 +77,7 @@ void draw() {
   pushStyle();
   fill(color(255));
   textSize(textsize);
-  if(streak>=5)
+  if(streak>=streakgoal)
   {
     txt = "Press 'c' to clear screen";
   }
@@ -80,7 +93,7 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Level: " + Integer.toString(level);
-  text(txt, width-textWidth(txt)-width/70, height - textsize+5); 
+  text(txt, width-textWidth(txt)-width/70, height - textsize); 
   popStyle();
   
   //Spawn rate text
@@ -89,6 +102,21 @@ void draw() {
   textSize(textsize);
   txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
   text(txt, width-textWidth(txt)-10, height - 2*textsize); 
+  popStyle();
+  
+  //Zombies left text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  txt = "Zombies left: " + Integer.toString(zombiesinlevel); 
+  text(txt, width-textWidth(txt)-10, height - 3*textsize); 
+  popStyle();
+  
+  //User typing display
+  pushStyle();
+  fill(color(255));
+  textSize(20);
+  text(typing, 15, 30); 
   popStyle();
 
   for (int i=0; i<zombies.size (); i++)
@@ -102,18 +130,15 @@ void draw() {
 
   if (currtime - starttime >= spawnrate)
   {
-    Zombie newzombie = new Zombie(level);
+    zombiesinlevel--;
+    Zombie newzombie = new Zombie(level, equations[iterator], results[iterator]);
     zombies.add(newzombie);
     starttime = currtime;
+    iterator++;
   }
 
-  pushStyle();
-  fill(color(255));
-  textSize(20);
-  text(typing, 15, 30); 
-  popStyle();
-}
 
+}
 
 void keyReleased() 
 {
@@ -169,9 +194,13 @@ void keyReleased()
       typing += "9";
     } 
     break; 
+  case '-':
+    {
+      typing += "-";
+    }
   case 'c':
     { 
-      if(streak>=5)
+      if(streak >= streakgoal)
       {
         score += zombies.size();
         zombies = new ArrayList<Zombie>();
@@ -225,5 +254,30 @@ boolean checkAnswer(String answer)
     }
   }
   return correct;
+}
+
+void createArrays()
+{
+  
+  //TO PARAKATW EINAI TO XEIROTERO PRAGMA POU EXEI FTIAXTEI STIN ISTORIA TOU PROGRAMATISMOU!!! ALLA DOULEVEI PROS TO PARWN!!!
+  iterator = 0;
+  equations = new String[zombiesinlevel];
+  results = new int[zombiesinlevel];
+  eq = new Equation();
+  hash = new HashMap<String, Integer>();
+  hash = eq.nextEquation(level, zombiesinlevel);
+  int asdf = 0;
+  for (Map.Entry me : hash.entrySet()) {
+    equations[asdf] = me.getKey().toString();
+    results[asdf] = Integer.parseInt(me.getValue().toString());
+    asdf++;
+  }
+  println();
+  println("---------Difficulity " + level + "---------");
+  for(int i = 0; i < asdf; i++)
+ {
+   System.out.println(equations[i] + " = " + results[i]);
+ }
+ 
 }
 

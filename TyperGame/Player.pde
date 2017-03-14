@@ -1,20 +1,24 @@
 public class Player{
  
-  int velX, velY;
+  int velocityX, velocityY;
   int size;
+  int x, y;
+  
+  PImage picture;
   
   boolean holdingW, holdingA, holdingS, holdingD;
   
+  static final int MOVESPEED = 10;
+  static final int PLAYERSIZE = 40;
  
- Player(int s){
-  this.size = s;
-  this.x = width/2;
-  this.y = height/2;
+ Player(){
   
-  holdingW = false;
-  holdingA = false;
-  holdingS = false;
-  holdingD = false;
+  size = PLAYERSIZE;
+  picture = loadImage("assets/PLACEHOLDER.png");
+  picture.resize(size, size);
+  x = width/2;
+  y = height/2;
+
  }
  
  void keyPressed(){
@@ -32,7 +36,7 @@ public class Player{
   }
  }
  
- void keyReleased(){
+  void keyReleased(){
    if (key == 'w' || key == 'W'){
     holdingW = false; 
    }
@@ -46,13 +50,25 @@ public class Player{
     holdingD = false; 
    }
  }
- 
+
+void move(){
+  if(holdingW){
+    y -= MOVESPEED;
+  }
+  if(holdingS){
+    y += MOVESPEED;
+  }
+  if(holdingA){
+    x -= MOVESPEED;
+  }
+  if(holdingD){
+    x += MOVESPEED;
+  }
+}
+
+
  void draw(){
-    pushStyle();
-    fill(color(255));
-    noStroke();
-    ellipse(x,y, size, size);
-    popStyle();  
+    image(picture, x-size/2, y-size/2);
  } 
   
   

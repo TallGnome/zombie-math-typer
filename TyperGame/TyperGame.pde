@@ -5,10 +5,13 @@ ArrayList<Zombie> zombies;
 int starttime, currtime, spawnrate, score, level, textsize, streak;
 String typing, txt;
 
+Player player;
+
 void setup() {
   size(700, 800); 
   frameRate(60);
   level = 1;
+  player = new Player();
   zombies = new ArrayList<Zombie>();
   starttime = millis();
   spawnrate = 3000; //ms
@@ -20,9 +23,9 @@ void setup() {
 
 
 void draw() {
-
   noCursor();
   background(0); //Black
+
 
   //Bad programming?? fix VVVVV
   if(score == 10 && level == 1)
@@ -101,6 +104,27 @@ void draw() {
   textSize(20);
   text(typing, 15, 30); 
   popStyle();
+  
+  
+    player.move();
+    player.draw();
+    
+}
+
+void keyPressed(){
+  // PLAYER MOVEMENT WITH THE WASD KEYS
+  if (key == 'w' || key == 'W'){
+    player.holdingW = true;
+  } 
+  if (key == 'a' || key == 'A'){
+    player.holdingA = true;
+  }
+  if (key == 's' || key == 'S'){
+    player.holdingS = true;
+  }
+  if (key == 'd' || key == 'D'){
+    player.holdingD = true;
+  }
 }
 
 
@@ -194,7 +218,24 @@ void keyReleased()
       {
         typing = typing.substring(0, typing.length() - 1);
       }
-    } 
+    }
+    // PLAYER MOVEMENT CANCEL ON RELEASE
+   case 'w':
+   {
+     player.holdingW = false;
+   }
+   case 's':
+   {
+     player.holdingS = false;
+   }
+   case 'a':
+   {
+     player.holdingA = false;
+   }
+   case 'd':
+   {
+     player.holdingD = false;
+   }
     break;
   default: 
     break;

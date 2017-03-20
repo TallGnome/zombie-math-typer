@@ -11,16 +11,15 @@ Equation eq;
 String[] equations;
 int[] results;
 
-Player player;
 
 void setup() {
-  size(700, 800); 
+  size(640, 540); 
   frameRate(60);
   level = 1;
   player = new Player();
   zombiesinlevel = 8;
   zombies = new ArrayList<Zombie>();
-  player = new Player(50);
+  //player = new Player(50);
   starttime = millis();
   spawnrate = 4000; //ms
   typing = ""; //Used for user typing display.

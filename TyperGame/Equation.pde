@@ -35,7 +35,7 @@ public class Equation{
       } break;
       case 4:{
         this.operator = new int [1];
-        this.operator[0] = (int) random(2)+2;
+        this.operator[0] = (int) random(3)+2;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
           this.values[i] = (int) random(1,100);

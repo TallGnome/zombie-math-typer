@@ -14,7 +14,7 @@ void setup() {
   frameRate(60);
   eq = new Equation();
   hash = new HashMap<String, Integer>();
-  hash = eq.nextEquation(5, 5);
+  hash = eq.nextEquation(4, 8);
   for (Map.Entry me : hash.entrySet()) {
     print(me.getKey() + " is ");
     println(me.getValue());

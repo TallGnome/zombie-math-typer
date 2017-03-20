@@ -22,7 +22,7 @@ public class Player{
     holdingW = true;
   } 
   if (key == 'a' || key == 'A'){
-    holdingA = true;
+    holdingA = true;  
   }
   if (key == 's' || key == 'S'){
     holdingS = true;

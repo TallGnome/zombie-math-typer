@@ -11,10 +11,13 @@ Equation eq;
 String[] equations;
 int[] results;
 
+Player player;
+
 void setup() {
   size(700, 800); 
   frameRate(60);
   level = 1;
+  player = new Player();
   zombiesinlevel = 8;
   zombies = new ArrayList<Zombie>();
   player = new Player(50);
@@ -33,7 +36,6 @@ void setup() {
 
 
 void draw() {
-
   noCursor();
   background(0); //Black
 
@@ -137,8 +139,34 @@ void draw() {
     iterator++;
   }
 
-
+  pushStyle();
+  fill(color(255));
+  textSize(20);
+  text(typing, 15, 30); 
+  popStyle();
+  
+  
+    player.move();
+    player.draw();
+    
 }
+
+void keyPressed(){
+  // PLAYER MOVEMENT WITH THE WASD KEYS
+  if (key == 'w' || key == 'W'){
+    player.holdingW = true;
+  } 
+  if (key == 'a' || key == 'A'){
+    player.holdingA = true;
+  }
+  if (key == 's' || key == 'S'){
+    player.holdingS = true;
+  }
+  if (key == 'd' || key == 'D'){
+    player.holdingD = true;
+  }
+}
+
 
 void keyReleased() 
 {
@@ -234,7 +262,24 @@ void keyReleased()
       {
         typing = typing.substring(0, typing.length() - 1);
       }
-    } 
+    }
+    // PLAYER MOVEMENT CANCEL ON RELEASE
+   case 'w':
+   {
+     player.holdingW = false;
+   }
+   case 's':
+   {
+     player.holdingS = false;
+   }
+   case 'a':
+   {
+     player.holdingA = false;
+   }
+   case 'd':
+   {
+     player.holdingD = false;
+   }
     break;
   default: 
     break;

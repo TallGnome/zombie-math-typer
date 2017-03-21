@@ -4,7 +4,7 @@ import java.util.Map;
 //SoundFile file;
 ArrayList<Zombie> zombies;
 int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator;
-String typing, txt;
+String typing, typingtemp, txt;
 Player player;
 HashMap<String, Integer> hash;
 Equation eq;
@@ -13,7 +13,7 @@ int[] results;
 
 
 void setup() {
-  size(640, 540); 
+  size(800, 640); 
   frameRate(60);
   level = 1;
   player = new Player();
@@ -22,7 +22,7 @@ void setup() {
   //player = new Player(50);
   starttime = millis();
   spawnrate = 4000; //ms
-  typing = ""; //Used for user typing display.
+  typing = typingtemp = ""; //Used for user typing display.
   score = 0; //Initial score.
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Correct guesses in a row.
@@ -152,15 +152,15 @@ void draw() {
 
 void keyPressed(){
   // PLAYER MOVEMENT WITH THE WASD KEYS
-  if (key == 'w' || key == 'W'){
+  /*if (key == 'w' || key == 'W'){
     player.holdingW = true;
-  } 
+  }*/
   if (key == 'a' || key == 'A'){
     player.holdingA = true;
   }
-  if (key == 's' || key == 'S'){
+  /*if (key == 's' || key == 'S'){
     player.holdingS = true;
-  }
+  }*/
   if (key == 'd' || key == 'D'){
     player.holdingD = true;
   }
@@ -173,58 +173,62 @@ void keyReleased()
   {
   case '0':
     { 
-      typing += "0";
+      typingtemp += "0";
     } 
     break;
   case '1':
     { 
-      typing += "1";
+      typingtemp += "1";
     } 
     break;
   case '2':
     { 
-      typing += "2";
+      typingtemp += "2";
     } 
     break;
   case '3':
     { 
-      typing += "3";
+      typingtemp += "3";
     } 
     break;  
   case '4':
     { 
-      typing += "4";
+      typingtemp += "4";
     } 
     break;
   case '5':
     { 
-      typing += "5";
+      typingtemp += "5";
     } 
     break;  
   case '6':
     { 
-      typing += "6";
+      typingtemp += "6";
     } 
     break;
   case '7':
     { 
-      typing += "7";
+      typingtemp += "7";
     } 
     break;  
   case '8':
     { 
-      typing += "8";
+      typingtemp += "8";
     } 
     break;
   case '9':
     { 
-      typing += "9";
+      typingtemp += "9";
     } 
     break; 
   case '-':
     {
-      typing += "-";
+      if(typingtemp == "")
+      {
+        typingtemp += "-";
+      }
     }
+    break;
   case 'c':
     { 
       if(streak >= streakgoal)
@@ -253,24 +257,25 @@ void keyReleased()
         }
       }
     } 
-    typing = "";
+    typingtemp = "";
     break;
   case BACKSPACE:
     { 
       if (typing.length() > 0)
       {
         typing = typing.substring(0, typing.length() - 1);
+        typingtemp = typing;
       }
     }
     // PLAYER MOVEMENT CANCEL ON RELEASE
-   case 'w':
+   /*case 'w':
    {
      player.holdingW = false;
    }
    case 's':
    {
      player.holdingS = false;
-   }
+   }*/
    case 'a':
    {
      player.holdingA = false;
@@ -282,6 +287,10 @@ void keyReleased()
     break;
   default: 
     break;
+  }
+  if(typingtemp.length() <= 6) 
+  {
+    typing = typingtemp;
   }
 }
 

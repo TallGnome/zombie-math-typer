@@ -66,12 +66,14 @@ void draw() {
     } 
   }
   
+  //GUI
+  
   //Score text
   pushStyle();
   fill(color(255));
   textSize(textsize);
   txt = "Score: " + Integer.toString(score);
-  text(txt, width - textWidth(txt)-width/70 , height/40); 
+  text(txt, width - textWidth(txt)-width/70 , height/40+5); 
   popStyle();
   
   //Streak text
@@ -86,7 +88,7 @@ void draw() {
   {
     txt = "Streak: " + Integer.toString(streak);
   }
-  text(txt, width-textWidth(txt)-10, height/40 + textsize); 
+  text(txt, width-textWidth(txt)-10, height/40 + 5 + textsize); 
   popStyle();
   
   //Level text
@@ -94,7 +96,7 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Level: " + Integer.toString(level);
-  text(txt, width-textWidth(txt)-width/70, height - textsize); 
+  text(txt, width-textWidth(txt)-width/70, height - textsize + 5); 
   popStyle();
   
   //Spawn rate text
@@ -102,7 +104,7 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
-  text(txt, width-textWidth(txt)-10, height - 2*textsize); 
+  text(txt, width-textWidth(txt)-10, height - 2*textsize + 5); 
   popStyle();
   
   //Zombies left text
@@ -110,7 +112,7 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Zombies left: " + Integer.toString(zombiesinlevel); 
-  text(txt, width-textWidth(txt)-10, height - 3*textsize); 
+  text(txt, width-textWidth(txt)-10, height - 3*textsize + 5); 
   popStyle();
   
   //User typing display
@@ -119,6 +121,18 @@ void draw() {
   textSize(20);
   text(typing, 15, 30); 
   popStyle();
+  
+  //Health bar
+  pushStyle();
+  stroke(color(255), 100);
+  noFill();
+  rect(width/2-101, 15, 202, 40, 7);
+  popStyle(); 
+  pushStyle();
+  fill(204, 102, 0);
+  rect(width/2-100, 16, player.hp*2, 38, 7);
+  popStyle();
+ 
 
   for (int i=0; i<zombies.size (); i++)
   {

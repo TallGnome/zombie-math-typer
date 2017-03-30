@@ -1,12 +1,13 @@
 public class Player{
  
   int velocityX, velocityY;
-  int size;
+  int size, hp;
   int x, y;
   
   PImage picture;
   
-  boolean holdingW, holdingA, holdingS, holdingD;
+  //boolean holdingW, holdingS;
+  boolean holdingA, holdingD;
   
   static final int MOVESPEED = 10;
   static final int PLAYERSIZE = 40;
@@ -14,50 +15,51 @@ public class Player{
  Player(){
   
   size = PLAYERSIZE;
+  hp = 100;
   picture = loadImage("assets/PLACEHOLDER.png");
   picture.resize(size, size);
   x = width/2;
-  y = height/2;
+  y = height-size/2;
 
  }
  
  void keyPressed(){
-  if (key == 'w' || key == 'W'){
+  /*if (key == 'w' || key == 'W'){
     holdingW = true;
-  } 
+  } */
   if (key == 'a' || key == 'A'){
     holdingA = true;  
   }
-  if (key == 's' || key == 'S'){
+  /*if (key == 's' || key == 'S'){
     holdingS = true;
-  }
+  }*/
   if (key == 'd' || key == 'D'){
     holdingD = true;
   }
  }
  
   void keyReleased(){
-   if (key == 'w' || key == 'W'){
+   /*if (key == 'w' || key == 'W'){
     holdingW = false; 
-   }
+   }*/
    if (key == 'a' || key == 'A'){
     holdingA = false; 
    }
-   if (key == 's' || key == 'S'){
+   /*if (key == 's' || key == 'S'){
     holdingS = false; 
-   }
+   }*/
    if (key == 'd' || key == 'D'){
     holdingD = false; 
    }
  }
 
 void move(){
-  if(holdingW){
+  /*if(holdingW){
     y -= MOVESPEED;
-  }
-  if(holdingS){
+  }*/
+  /*if(holdingS){
     y += MOVESPEED;
-  }
+  }*/
   if(holdingA){
     x -= MOVESPEED;
   }

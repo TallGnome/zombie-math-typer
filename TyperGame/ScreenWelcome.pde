@@ -4,6 +4,9 @@ class ScreenWelcome implements IScreen{
  private Button exitButton;
  private Button optionsButton;
  
+
+ 
+
   ScreenWelcome() {
     background = loadImage ("assets/welcome.jpg");
     startButton  = new Button(new HRectangle(WINDOW_WIDTH/2-75, WINDOW_HEIGHT/2-50, 150, 30), "Start Game", this);
@@ -45,6 +48,7 @@ class ScreenWelcome implements IScreen{
   }
 
   void draw() {
+    background.resize(800, 640);
     image (background, 0,0); 
   }
 }

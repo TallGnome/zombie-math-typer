@@ -24,10 +24,10 @@ class BeingPlayer extends MassedBeing{
   
   public void move(){
     if(left && !right){
-      _shape.getPosition().x -=2;
+      _shape.getPosition().x -=4;
       _shape.getPosition().x = max(_shape.getPosition().x, 20);
     }else if(!left && right){
-      _shape.getPosition().x +=2;
+      _shape.getPosition().x +=4;
       _shape.getPosition().x = min(_shape.getPosition().x, width-20);
     }
   }

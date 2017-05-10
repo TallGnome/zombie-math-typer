@@ -4,9 +4,9 @@ import hermes.hshape.*;
 import hermes.postoffice.*;
 import hermes.*;
 
-//import processing.sound.*;
 import java.util.Map;
 
+import ddf.minim.*;
 
 static final int WINDOW_WIDTH = 800;
 static final int WINDOW_HEIGHT = 640;
@@ -45,9 +45,7 @@ void setup() {
 void draw() {
   world.draw();
 }
-//void setup() {
-//  size(800, 640); 
-//  frameRate(60);
+
 //  level = 1;
 //  player = new Player();
 //  zombiesinlevel = 8;

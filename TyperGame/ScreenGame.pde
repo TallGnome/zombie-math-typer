@@ -47,5 +47,17 @@ class ScreenGame implements IScreen{
         world.delete(this.zombies.get(i));
       }
     }
+    
+    currtime = millis();
+
+    if (currtime - starttime >= spawnrate)
+    {
+      zombiesinlevel--;
+//      BeingZombie newzombie = new BeingZombie(35, 60, level, equations[iterator], results[iterator]);
+BeingZombie newzombie = new BeingZombie(35, 60, level, "lmao", 5);
+      zombies.add(newzombie);
+      starttime = currtime;
+      iterator++;
+    }
   }
 }

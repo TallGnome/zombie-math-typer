@@ -43,7 +43,7 @@ static final float MAX_HP = 100;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT); 
-  frameRate(60);
+  frameRate(144);
   
   level = 1;
   player = new Player();
@@ -72,10 +72,7 @@ void setup() {
   ambience = minim.loadFile("assets/audio/ambience.mp3");
 
   ambience.loop();
-  ambience.setGain(-15.0);
-
-
-  
+  ambience.setGain(-15.0);  
    
 }
 

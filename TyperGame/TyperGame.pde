@@ -185,6 +185,16 @@ void draw() {
     text("Press r to go to the main screen ", width/2 - 145, height/2 + 100);
   }
   else if(state == SELECTION_STATE){
+    fill(0, 255, 0);    
+    textSize(36);
+    text("Select a Character", width/2 - 80, 80);
+    
+    image(loadImage("assets/MEMEMASTER1.png"), 250, height/2, 128, 128);
+    text("1", 260, height/2 + 132);
+    image(loadImage("assets/MEMEMASTER2.png"), width/2, height/2, 128, 128);
+    text("2", width/2 + 20, height/2 + 132);
+    image(loadImage("assets/MEMEMASTER3.png"), width - 250, height/2, 128, 128);
+    text("3", width - 270, height/2 + 132);  
   }
 }
 
@@ -230,6 +240,9 @@ void keyReleased(){
       state = MAIN_STATE;
     }
   }
+  else if(state == SELECTION_STATE){
+    handleKeysForSelectionState(key);
+  }
 }
 
 boolean checkAnswer(String answer){
@@ -252,11 +265,30 @@ boolean checkAnswer(String answer){
 void handleKeysForMainState(char k){
   switch (k){
     case ENTER:{
-      state = PLAY_STATE;
+      state = SELECTION_STATE;
     }break;
     case 'P':{
       
     }break;    
+  }
+}
+
+void handleKeysForSelectionState(char k){
+  switch (k){
+    case '1':{
+      player.changeImage(1);
+      state = PLAY_STATE;
+    }break;
+    case '2':{
+      player.changeImage(2);
+      state = PLAY_STATE;    
+    }break;
+    case '3':{
+      player.changeImage(3);
+      state = PLAY_STATE;    
+    }break;
+    case default:
+    break;
   }
 }
 

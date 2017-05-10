@@ -39,8 +39,9 @@ String[] equations;
 int[] results;
 int state;
 static int player_image;
+boolean playsAmbience, playsScreenMusic;
 
-static final float MAX_HP = 100;
+static final float MAX_HP = 5;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT); 
@@ -57,6 +58,7 @@ void setup() {
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Correct guesses in a row.
   streakgoal = 10; //What value streak count must reach to be able to clear screen.
+  playsAmbience = false;
   
   state = 0;
 
@@ -72,8 +74,6 @@ void setup() {
   
   ambience = minim.loadFile("assets/audio/ambience.mp3");
 
-  ambience.loop();
-  ambience.setGain(-15.0);  
    
 }
 
@@ -83,6 +83,16 @@ void draw() {
   
   // STATE 1 IS GAME STATE
   if (state == PLAY_STATE){ 
+    
+    if(!playsAmbience)
+    {
+      screenMusic.stop();
+      playsScreenMusic = false;
+      ambience.loop();
+      ambience.setGain(-15.0);  
+      playsAmbience = true;
+    }
+    
     populateZombies();
     //Score text
     drawScoreDisplay();
@@ -132,6 +142,13 @@ void draw() {
   }
   //STATE 0 IS MAIN MENU
   else if(state == MAIN_STATE){
+    if(!playsScreenMusic)
+    {
+      ambience.pause();
+      playsAmbience = false;
+      screenMusic.trigger();
+      playsScreenMusic = true;
+    }
     image(loadImage("assets/welcome.jpg"), 0, 0, width, height);
     pushStyle();
     fill(color(200, 200, 200, 80));
@@ -149,6 +166,14 @@ void draw() {
     text("Press ENTER to continue...", width/2 - 155, height/2); 
   } 
   else if(state == END_STATE){
+    if(!playsScreenMusic)
+    {
+      ambience.pause();
+      playsAmbience = false;
+      screenMusic.trigger();
+      playsScreenMusic = true;
+    }
+    
     fill(255, 0, 0);    
     textSize(36);
     text("GAME OVER", width/2 - 155, height/2);
@@ -427,7 +452,7 @@ void drawHealthBar(){
   popStyle();
   
   
-      pushStyle();
+    pushStyle();
     stroke(color(255), 100);
     noFill();
     rect(width/2-101, 15, 202, 40, 7);

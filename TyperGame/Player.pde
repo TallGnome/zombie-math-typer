@@ -17,7 +17,7 @@ public class Player{
   picture = loadImage("assets/PLACEHOLDER.png");
   picture.resize(size, size);
   x = width/2;
-  y = height/2;
+  y = height - height/5;
 
  }
  

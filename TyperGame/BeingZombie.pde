@@ -28,7 +28,7 @@ class BeingZombie extends MassedBeing{
    }
    
   public void update() {
-    if((_shape.getPosition().y + (this.char_size/2)) <= height){
+    if((_shape.getPosition().y + (this.char_size/2)) >= height){
       println("reached end");
       this.remove = true;
     }

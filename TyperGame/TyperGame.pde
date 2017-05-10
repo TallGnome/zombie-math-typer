@@ -286,6 +286,16 @@ void keyReleased()
      player.holdingD = false;
    }
     break;
+   case 'A':
+   {
+     player.holdingA = false;
+   }
+   break;
+   case 'D':
+   {
+     player.holdingD = false;
+   }
+    break;
   default: 
     break;
   }

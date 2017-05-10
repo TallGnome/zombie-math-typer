@@ -12,10 +12,7 @@ AudioSample zombieSpawn, zombieDeath, screenMusic, loseHP, thunder;
 AudioPlayer ambience;
 AudioInput input;
 
-//import processing.sound.*;
 import java.util.Map;
-
-
 
 static final int WINDOW_WIDTH = 800;
 static final int WINDOW_HEIGHT = 640;
@@ -44,10 +41,10 @@ static final float MAX_HP = 100;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT); 
-  frameRate(60);
-  level = 1;
+  frameRate(144);
+  level = 5;
   player = new Player();
-  zombiesinlevel = 20;
+  zombiesinlevel = 10;
   zombies = new ArrayList<Zombie>();
   starttime = millis();
   spawnrate = 4000; //ms
@@ -68,12 +65,10 @@ void setup() {
   loseHP = minim.loadSample("assets/audio/losehp.mp3");
   screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
   thunder = minim.loadSample("assets/audio/thunder.mp3");
-  
   ambience = minim.loadFile("assets/audio/ambience.mp3");
 
   ambience.loop();
   ambience.setGain(-15.0);
-
 
 }
 
@@ -118,7 +113,7 @@ void draw() {
     {
       level++;  
       zombiesinlevel = 15;
-      spawnrate += 3000;
+      spawnrate += 6000;
       createArrays();
     } 
   }
@@ -223,9 +218,6 @@ void draw() {
     starttime = currtime;
     iterator++;
     zombieSpawn.trigger();
-
-
-    
   }
 
   player.move();
@@ -258,7 +250,7 @@ void draw() {
   //STATE 0 IS MAIN MENU
   else if(state == 0){
     textSize(32);
-    text("state 0 IS MAIN MENU", 10, 30); 
+    text("MAIN MENU: Press Enter to Continue", 10, 30); 
     fill(0, 102, 153);
   }
     
@@ -283,7 +275,7 @@ void keyPressed(){
 
 void keyReleased() 
 {
-  if ( state == 1){
+  if (state == 1){
   switch (key)
   {
   case '0':
@@ -446,7 +438,6 @@ boolean checkAnswer(String answer)
       correct = true;
       player.health += 2.5;
       zombieDeath.trigger();
-
     }
   }
   return correct;

@@ -15,12 +15,13 @@ public class Zombie
     this.speed = getSpeed(lvl);
     //damage = getDamage(lvl);
     this.picture = loadImage("assets/zombie.png");
-    this.picture.resize(this.size, this.size);
+    this.picture.resize(
+    this.size, this.size);
     this.x = (int) random(0 + this.size, width - this.size); //Zombie starts in a random horizontal position from the top of the screen.
     this.y = this.size; 
     this.equation = eq;
     this.solution = result;
-    this.xMovement = (int) random(-3,3);    
+    this.xMovement = (int) random(-2,2);    
     this.txtSize = 20;
     this.level = lvl;
 
@@ -68,30 +69,39 @@ public class Zombie
     {
       case 1:
       { 
-        this.speed = random(1,4);
+        this.speed = random(1,2);
       } 
       break;
       case 2:
       { 
-        this.speed = random(2,4);
+        this.speed = random(1,2);
       } 
       break;
       case 3:
-      { 
-        this.speed = random(2,5);
+      {   
+        this.speed = random(1,3);
+      }
+      case 4:
+      {   
+        this.speed = random(1,3);
       } 
+      case 5:
+      {   
+        this.speed = random(2,3);
+      } 
+      case 6:
+      {   
+        this.speed = random(1,3);
+      }  
+      case 7:
+      {   
+        this.speed = 1;
+      }  
       break;  
       default: 
         break;
     }
     return this.speed;
-  }
-  
-  float randomMovement(int x)
-  {
-    float r = random(-5, 5);
-    System.out.println(r);
-    return r;
   }
   
 }

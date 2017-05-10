@@ -8,7 +8,6 @@ AudioInput input;
 //import processing.sound.*;
 import java.util.Map;
 
-//SoundFile file;
 ArrayList<Zombie> zombies;
 int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator, starttime2, dur;
 String typing, typingtemp, txt;
@@ -46,13 +45,10 @@ void setup() {
   thunder = minim.loadSample("assets/audio/thunder.mp3");
   
   ambience = minim.loadFile("assets/audio/ambience.mp3");
-//  input = minim.getLineIn();
- 
+
   ambience.loop();
   ambience.setGain(-15.0);
-  
-    
-   
+
 }
 
 

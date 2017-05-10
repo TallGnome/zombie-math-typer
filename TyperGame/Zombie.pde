@@ -14,7 +14,13 @@ public class Zombie
     this.size = (int) random(40, 80);
     this.speed = getSpeed(lvl);
     //damage = getDamage(lvl);
-    this.picture = loadImage("assets/zombie.png");
+    if (random(-9,4) > 0){
+        this.picture = loadImage("assets/zombie2.png");
+     }
+     else{
+       this.picture = loadImage("assets/zombie.png");
+     }
+    
     this.picture.resize(this.size, this.size);
     this.x = (int) random(0 + this.size, width - this.size); //Zombie starts in a random horizontal position from the top of the screen.
     this.y = this.size; 

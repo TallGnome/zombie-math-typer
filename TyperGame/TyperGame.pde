@@ -165,9 +165,6 @@ void keyPressed(){
       text("PRESS Y TO EXIT \n OR PRESS ESC TO CONTINUE", width/2 - 300, height/2);
       key = "Z".charAt(0);
       noLoop();
-      if( key == 'y'){
-        exit();
-      }
     }else{
       loop();
       key = "Z".charAt(0);
@@ -280,14 +277,18 @@ void handleKeysForPlayState(char k){
       
       case ENTER:{
           if (typing.length() > 0){
-            if (checkAnswer(typing)){
-              score++;
-              streak++;
-            } else{
-              streak = 0;
+            if (typing.length() > 0){
+            if (!typing.equals("-")){
+              if (checkAnswer(typing)){
+                score++;
+                streak++;
+              } else{
+                streak = 0;
+              }
             }
           }
-       } 
+       }
+      } 
        typingtemp = "";
        break;
        

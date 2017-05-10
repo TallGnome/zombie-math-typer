@@ -219,7 +219,7 @@ void keyReleased(){
     }
   }
   else if(state == SELECTION_STATE){
-    // key bindings for image character selection!!
+    handleKeysForSelectionState(key);
   }
 }
 
@@ -243,11 +243,30 @@ boolean checkAnswer(String answer){
 void handleKeysForMainState(char k){
   switch (k){
     case ENTER:{
-      state = PLAY_STATE;
+      state = SELECTION_STATE;
     }break;
     case 'P':{
       
     }break;    
+  }
+}
+
+void handleKeysForSelectionState(char k){
+  switch (k){
+    case '1':{
+      player.changeImage(1);
+      state = PLAY_STATE;
+    }break;
+    case '2':{
+      player.changeImage(2);
+      state = PLAY_STATE;    
+    }break;
+    case '3':{
+      player.changeImage(3);
+      state = PLAY_STATE;    
+    }break;
+    case default:
+    break;
   }
 }
 

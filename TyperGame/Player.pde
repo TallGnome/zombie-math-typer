@@ -8,6 +8,9 @@ public class Player{
   private float max_health;
   
   private PImage picture;
+  private PImage img1 = loadImage("assets/MEMEMASTER1.png");
+  private PImage img2 = loadImage("assets/MEMEMASTER2.png");
+  private PImage img3 = loadImage("assets/MEMEMASTER3.png");
   
   //boolean holdingW, holdingS;
   private boolean holdingA, holdingD;
@@ -18,7 +21,7 @@ public class Player{
   
   this.size = PLAYERSIZE;
   this.hp = 100;
-  this.picture = loadImage("assets/MEMEMASTER.png");
+  this.picture = img2;
   this.picture.resize( this.size, this.size * 2 );
   this.x = width/2;
   this.y = height - height/5;
@@ -67,6 +70,18 @@ void move(){
  public int getY(){
   return y;
  }
-  
+ 
+   public void changeImage(int x){
+   if (x == 1){
+     this.picture = img1;
+     this.picture.resize( this.size, this.size * 2 );
+   }else if(x == 2){
+     this.picture = img2;
+     this.picture.resize( this.size, this.size * 2 );
+   }else if(x == 3){
+     this.picture = img3;
+     this.picture.resize( this.size, this.size * 2 ); 
+   }
+ }
   
 }

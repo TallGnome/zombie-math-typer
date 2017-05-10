@@ -130,6 +130,7 @@ void draw() {
     if( zombies.get(i).y > height - zombies.get(i).size ){
       player.health -= 5;
       zombies.remove(i);
+      streak = 0;
     }
   }
 

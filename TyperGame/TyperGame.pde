@@ -18,7 +18,7 @@ void setup() {
   frameRate(60);
   level = 1;
   player = new Player();
-  zombiesinlevel = 8;
+  zombiesinlevel = 20;
   zombies = new ArrayList<Zombie>();
   //player = new Player(50);
   starttime = millis();
@@ -47,8 +47,8 @@ void draw() {
     if(level == 1)
     {
       level++;
-      zombiesinlevel = 12;
-      spawnrate -= 250;
+      zombiesinlevel = 15;
+      spawnrate -= 300;
       createArrays();  
     }
     else if(level == 2)
@@ -60,22 +60,22 @@ void draw() {
     }
     else if(level == 3)
     {
-      //level++;  
-      zombiesinlevel = 18;
+      level++;  
+      zombiesinlevel = 15;
       spawnrate -= 250;
       createArrays();
     }
     else if(level == 4)
     {
       level++;  
-      zombiesinlevel = 18;
+      zombiesinlevel = 15;
       spawnrate -= 250;
       createArrays();
     } 
     else if(level == 5)
     {
       level++;  
-      zombiesinlevel = 18;
+      zombiesinlevel = 15;
       spawnrate += 3000;
       createArrays();
     } 
@@ -134,7 +134,7 @@ void draw() {
   pushStyle();
   fill(color(255));
   textSize(20);
-  text(typing, player.x-textWidth(typing)/2, player.y+player.size); 
+  text(typing, player.x-textWidth(typing)/2, player.y+player.size*2); 
   popStyle();
 
   //Health bar
@@ -361,6 +361,9 @@ void keyReleased()
 boolean checkAnswer(String answer)
 {
   boolean correct = false;
+  if (answer == "-");{
+    answer = "0";
+  }
   int answerToInt = Integer.parseInt(answer);
   for (int i=0; i < zombies.size (); i++)
   {
@@ -368,7 +371,7 @@ boolean checkAnswer(String answer)
     {
       zombies.remove(i);
       correct = true;
-      player.health += 5;
+      player.health += 2.5;
     }
   }
   return correct;

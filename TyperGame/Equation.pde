@@ -13,7 +13,7 @@ public class Equation{
         this.operator[0] = (int) random(2)+1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,10);
+          this.values[i] = (int) random(1,49);
         }
       } break;
       case 2:{
@@ -21,7 +21,7 @@ public class Equation{
         this.operator[0] = (int) random(2)+1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,25);
+          this.values[i] = (int) random(1,100);
         }
       } break;
       case 3:{
@@ -29,7 +29,7 @@ public class Equation{
         this.operator[0] = (int) random(2)+1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,50);
+          this.values[i] = (int) random(5,70);
         }
       } break;
       case 4:{
@@ -37,7 +37,7 @@ public class Equation{
         this.operator[0] = (int) random(3)+2;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,100);
+          this.values[i] = (int) random(3,50);
         }
       } break;
       case 5:{

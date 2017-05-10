@@ -1,38 +1,38 @@
 public class Zombie
 {
-  int x, y, size, solution, txtSize, level, xMovement;
-  float speed;
-  String equation;
-  PImage picture;
+  private int x, y, size, solution, txtSize, level, xMovement;
+  private float speed;
+  private String equation;
+  private PImage picture;
   
   Zombie(int lvl, String eq, int result)
   {
-    size = (int) random(35, 90);
-    speed = getSpeed(lvl);
+    this.size = (int) random(35, 90);
+    this.speed = getSpeed(lvl);
     //damage = getDamage(lvl);
-    picture = loadImage("assets/zombie.png");
-    picture.resize(size,size);
-    x = (int) random(0+size,width-size); //Zombie starts in a random horizontal position from the top of the screen.
-    y = size; 
-    equation = eq;
-    solution = result;
-    xMovement = (int) random(-2,2);    
-    txtSize = 20;
-    level = lvl;
+    this.picture = loadImage("assets/zombie.png");
+    this.picture.resize(this.size, this.size);
+    this.x = (int) random(0 + this.size, width - this.size); //Zombie starts in a random horizontal position from the top of the screen.
+    this.y = this.size; 
+    this.equation = eq;
+    this.solution = result;
+    this.xMovement = (int) random(-2,2);    
+    this.txtSize = 20;
+    this.level = lvl;
   }
   
   void move()
   {
-    y += speed;
-    x += xMovement;
+    this.y += this.speed;
+    this.x += this.xMovement;
   }
   
   void draw()
   {
-    image(picture, x-size/2, y-size/2);
-    String txt = equation;
-    textSize(txtSize);
-    text(txt, x - textWidth(txt)/2, y + size/2+txtSize);
+    image(this.picture, x-size/2, y-size/2);
+    String txt = this.equation;
+    textSize(this.txtSize);
+    text(txt, this.x - textWidth(txt)/2, this.y + this.size/2 + this.txtSize);
   }
   
   float getSpeed(int lvl)
@@ -42,17 +42,17 @@ public class Zombie
     {
       case 1:
       { 
-        speed = random(1,4);
+        this.speed = random(1,4);
       } 
       break;
       case 2:
       { 
-        speed = random(2,4);
+        this.speed = random(2,4);
       } 
       break;
       case 3:
       { 
-        speed = random(2,5);
+        this.speed = random(2,5);
       } 
       break;  
       default: 

@@ -19,8 +19,8 @@ public class Player{
   
   size = PLAYERSIZE;
   hp = 100;
-  picture = loadImage("assets/PLACEHOLDER.png");
-  picture.resize(size, size);
+  picture = loadImage("assets/MEMEMASTER.png");
+  picture.resize(size, size*2);
   x = width/2;
   y = height - height/5;
   health = MAX_HP;

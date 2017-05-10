@@ -45,10 +45,6 @@ public class Zombie
     String txt = equation;
     textSize(txtSize);
     text(txt, x - textWidth(txt)/2, y + size/2+txtSize);
-    if( y == height - size ){
-      player.health -= 5;
-    }
-    
   }
   
   int getSpeed(int lvl)

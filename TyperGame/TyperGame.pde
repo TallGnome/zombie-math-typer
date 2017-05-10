@@ -1,3 +1,10 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
 
 import ddf.minim.*;
 Minim minim;
@@ -8,36 +15,54 @@ AudioInput input;
 //import processing.sound.*;
 import java.util.Map;
 
+
+
+static final int WINDOW_WIDTH = 800;
+static final int WINDOW_HEIGHT = 640;
+
+static final int PLAYERSPEED = 5;
+static final int PLAYERSIZE = 50; 
+
+static final int CREDITS = 0;
+static final int WELCOME = 1;
+static final int OPTIONS = 2;
+static final int GAME = 3;
+
+//SoundFile file;
+
 ArrayList<Zombie> zombies;
-int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator, starttime2, dur;
+int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator;
 String typing, typingtemp, txt;
 Player player;
 HashMap<String, Integer> hash;
 Equation eq;
 String[] equations;
 int[] results;
+int state;
 
 static final float MAX_HP = 100;
 
 void setup() {
-  size(800, 640); 
-  frameRate(144);
+  size(WINDOW_WIDTH, WINDOW_HEIGHT); 
+  frameRate(60);
   level = 1;
   player = new Player();
   zombiesinlevel = 20;
   zombies = new ArrayList<Zombie>();
   starttime = millis();
-  starttime2 = millis();
   spawnrate = 4000; //ms
   typing = typingtemp = ""; //Used for user typing display.
   score = 0; //Initial score.
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Correct guesses in a row.
   streakgoal = 10; //What value streak count must reach to be able to clear screen.
+  
+  state = 0;
 
   createArrays();
   
   minim = new Minim(this);
+
   zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
   zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
   loseHP = minim.loadSample("assets/audio/losehp.mp3");
@@ -49,18 +74,16 @@ void setup() {
   ambience.loop();
   ambience.setGain(-15.0);
 
+
 }
-
-
 
 void draw() {
   noCursor();
   background(0); //Black
   
-
-
-  //player.draw();
-
+  // STATE 1 IS GAME STATE
+  if (state == 1){
+    
   if(zombiesinlevel == 0)
   {
     if(level == 1)
@@ -99,9 +122,6 @@ void draw() {
       createArrays();
     } 
   }
-  
-  //Collision
-  
   
   //GUI
   
@@ -171,7 +191,7 @@ void draw() {
   popStyle();
  
 
-  for (int i=0; i<zombies.size (); i++)
+   for (int i=0; i<zombies.size (); i++)
   {
     zombies.get(i).draw();
     zombies.get(i).move();
@@ -193,29 +213,20 @@ void draw() {
     }   
   }
 
-
   currtime = millis();
 
   if (currtime - starttime >= spawnrate)
   {
-
     zombiesinlevel--;
     Zombie newzombie = new Zombie(level, equations[iterator], results[iterator]);
     zombies.add(newzombie);
     starttime = currtime;
     iterator++;
     zombieSpawn.trigger();
-    
-    if (random(-10,1) > 0)
-    {
-      background(100);
-      thunder.trigger();
-    }
 
+
+    
   }
-  
-  
-  
 
   player.move();
   player.draw();
@@ -243,6 +254,13 @@ void draw() {
   }
   rect(width/2-100, 16, player.health*2, 38, 5);
   popStyle();
+  }
+  //STATE 0 IS MAIN MENU
+  else if(state == 0){
+    textSize(32);
+    text("state 0 IS MAIN MENU", 10, 30); 
+    fill(0, 102, 153);
+  }
     
 }
 
@@ -265,6 +283,7 @@ void keyPressed(){
 
 void keyReleased() 
 {
+  if ( state == 1){
   switch (key)
   {
   case '0':
@@ -398,6 +417,17 @@ void keyReleased()
   if(typingtemp.length() <= 6) 
   {
     typing = typingtemp;
+  }
+  }
+  else if( state == 0){
+  switch (key)
+  {
+  case ENTER:
+    { 
+      state = 1;
+    } 
+    break;
+  }
   }
 }
 

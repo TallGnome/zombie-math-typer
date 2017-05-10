@@ -1,77 +1,72 @@
 public class Player{
  
-  int velocityX, velocityY;
-  int size, hp;
-  int x, y;
+  private int velocityX, velocityY;
+  private int size, hp;
+  private int x, y;
   
-  float health;
-  float max_health;
+  private float health;
+  private float max_health;
   
-  PImage picture;
+  private PImage picture;
   
   //boolean holdingW, holdingS;
-  boolean holdingA, holdingD;
+  private boolean holdingA, holdingD;
   
-  static final int MOVESPEED = 5;
-  static final int PLAYERSIZE = 40;
+  
  
  Player(){
   
-  size = PLAYERSIZE;
-  hp = 100;
-  picture = loadImage("assets/MEMEMASTER.png");
-  picture.resize(size, size*2);
-  x = width/2;
-  y = height - height/5;
-  health = MAX_HP;
-  max_health = MAX_HP;
+  this.size = PLAYERSIZE;
+  this.hp = 100;
+  this.picture = loadImage("assets/MEMEMASTER.png");
+  this.picture.resize( this.size, this.size * 2 );
+  this.x = width/2;
+  this.y = height - height/5;
+  this.health = MAX_HP;
+  this.max_health = MAX_HP;
   
   
  }
  
  void keyPressed(){
   if (key == 'a' || key == 'A'){
-    holdingA = true;  
+    this.holdingA = true;  
   }
   if (key == 'd' || key == 'D'){
-    holdingD = true;
+    this.holdingD = true;
   }
  }
  
   void keyReleased(){
-   /*if (key == 'w' || key == 'W'){
-    holdingW = false; 
-   }*/
    if (key == 'a' || key == 'A'){
-    holdingA = false; 
+    this.holdingA = false; 
    }
-   /*if (key == 's' || key == 'S'){
-    holdingS = false; 
-   }*/
    if (key == 'd' || key == 'D'){
-    holdingD = false; 
+    this.holdingD = false; 
    }
  }
 
 void move(){
-  /*if(holdingW){
-    y -= MOVESPEED;
-  }*/
-  /*if(holdingS){
-    y += MOVESPEED;
-  }*/
-  if(holdingA){
-    x -= MOVESPEED;
+  if(this.holdingA){
+    this.x -= PLAYERSPEED;
   }
-  if(holdingD){
-    x += MOVESPEED;
+  if(this.holdingD){
+    this.x += PLAYERSPEED;
   }
 }
 
 
  void draw(){
-    image(picture, x-size/2, y-size/2);
+    image(this.picture, this.x - this.size / 2, this.y - this.size / 2);
  } 
+ 
+ public int getX(){
+   return x;
+ }
+ 
+ public int getY(){
+  return y;
+ }
   
   
 }

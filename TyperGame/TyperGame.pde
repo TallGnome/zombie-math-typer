@@ -1,7 +1,7 @@
 
 import ddf.minim.*;
 Minim minim;
-AudioSample zombieSpawn, zombieDeath;
+AudioSample zombieSpawn, zombieDeath, screenMusic, loseHP, thunder;
 AudioPlayer ambience;
 AudioInput input;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 
 //SoundFile file;
 ArrayList<Zombie> zombies;
-int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator;
+int starttime, currtime, spawnrate, score, level, textsize, streak, streakgoal, zombiesinlevel, iterator, starttime2, dur;
 String typing, typingtemp, txt;
 Player player;
 HashMap<String, Integer> hash;
@@ -22,12 +22,13 @@ static final float MAX_HP = 100;
 
 void setup() {
   size(800, 640); 
-  frameRate(60);
+  frameRate(144);
   level = 1;
   player = new Player();
   zombiesinlevel = 20;
   zombies = new ArrayList<Zombie>();
   starttime = millis();
+  starttime2 = millis();
   spawnrate = 4000; //ms
   typing = typingtemp = ""; //Used for user typing display.
   score = 0; //Initial score.
@@ -38,17 +39,19 @@ void setup() {
   createArrays();
   
   minim = new Minim(this);
-  zombieDeath = minim.loadSample("assets/zombiedeath.mp3");
-  zombieSpawn = minim.loadSample("assets/zombiespawn.mp3");
+  zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
+  zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
+  loseHP = minim.loadSample("assets/audio/losehp.mp3");
+  screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
+  thunder = minim.loadSample("assets/audio/thunder.mp3");
   
-  ambience = minim.loadFile("assets/ambience.mp3");
-  input = minim.getLineIn();
-  //ambience.play();
+  ambience = minim.loadFile("assets/audio/ambience.mp3");
+//  input = minim.getLineIn();
+ 
+  ambience.loop();
+  ambience.setGain(-15.0);
   
-//  ambience.trigger();
-
-
-  
+    
    
 }
 
@@ -100,6 +103,9 @@ void draw() {
       createArrays();
     } 
   }
+  
+  //Collision
+  
   
   //GUI
   
@@ -174,28 +180,46 @@ void draw() {
     zombies.get(i).draw();
     zombies.get(i).move();
     
-    // If the zombie reaches the end of the screen, deal damage and delete the zombie.
-    if( zombies.get(i).y > height - zombies.get(i).size ){
-      player.health -= 5;
+    if(zombies.get(i).kms == true || zombies.get(i).bot == true)
+    {
+      if(zombies.get(i).kms == true)
+      {
+        player.health -= 10;
+      }
+      else
+      {
+        player.health -= 5;
+        
+      }
       zombies.remove(i);
       streak = 0;
-    }
+      loseHP.trigger();  
+    }   
   }
+
 
   currtime = millis();
 
   if (currtime - starttime >= spawnrate)
   {
+
     zombiesinlevel--;
     Zombie newzombie = new Zombie(level, equations[iterator], results[iterator]);
     zombies.add(newzombie);
     starttime = currtime;
     iterator++;
     zombieSpawn.trigger();
-
-
     
+    if (random(-10,1) > 0)
+    {
+      background(100);
+      thunder.trigger();
+    }
+
   }
+  
+  
+  
 
   player.move();
   player.draw();

@@ -3,19 +3,23 @@ public class Zombie
   int x, y, size, solution, txtSize, level, xMovement;
   float speed;
   String equation;
+  boolean kms, bot;
   PImage picture;
   
   Zombie(int lvl, String eq, int result)
   {
-    size = (int) random(35, 90);
+    kms = false;
+    bot = false;
+    size = (int) random(40 , 80);
     speed = getSpeed(lvl);
     picture = loadImage("assets/zombie.png");
     picture.resize(size,size);
     x = (int) random(0+size,width-size); //Zombie starts in a random horizontal position from the top of the screen.
     y = size; 
+    
     equation = eq;
     solution = result;
-    xMovement = (int) random(-2,2);    
+    xMovement = (int) random(-3,3);    
     txtSize = 20;
     level = lvl;
   }
@@ -23,11 +27,35 @@ public class Zombie
   void move()
   {
     y += speed;
+    
+    //Bounce on walls
+    if(xMovement != 0)
+    {
+       if(width-x < size/2 || x < size/2)
+        {
+          xMovement *= -1;
+        }
+    }
+   
     x += xMovement;
+
+    
   }
   
   void draw()
   {
+    
+   //If zombie collides with player or the floor
+    if(dist(x,y,player.x,player.y) <= size)
+    {
+      kms = true;
+    }
+    
+    if(y > height + size/4)
+    {
+      bot = true;
+    }
+    
     image(picture, x-size/2, y-size/2);
     String txt = equation;
     textSize(txtSize);

@@ -29,6 +29,7 @@ HashMap<String, Integer> hash;
 Equation eq;
 String[] equations;
 int[] results;
+int state;
 
 static final float MAX_HP = 100;
 
@@ -46,6 +47,8 @@ void setup() {
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Correct guesses in a row.
   streakgoal = 10; //What value streak count must reach to be able to clear screen.
+  
+  state = 0;
 
   createArrays();
   
@@ -68,10 +71,9 @@ void draw() {
   noCursor();
   background(0); //Black
   
-
-
-  //player.draw();
-
+  // STATE 1 IS GAME STATE
+  if (state == 1){
+    
   if(zombiesinlevel == 0)
   {
     if(level == 1)
@@ -233,6 +235,13 @@ void draw() {
   }
   rect(width/2-100, 16, player.health*2, 38, 5);
   popStyle();
+  }
+  //STATE 0 IS MAIN MENU
+  else if(state == 0){
+    textSize(32);
+    text("state 0 IS MAIN MENU", 10, 30); 
+    fill(0, 102, 153);
+  }
     
 }
 
@@ -251,162 +260,11 @@ void keyPressed(){
     player.holdingD = true;  
   }
 }
-//void setup() {
-//  size(800, 640); 
-//  frameRate(60);
-//  level = 1;
-//  player = new Player();
-//  zombiesinlevel = 8;
-//  zombies = new ArrayList<Zombie>();
-//  //player = new Player(50);
-//  starttime = millis();
-//  spawnrate = 4000; //ms
-//  typing = typingtemp = ""; //Used for user typing display.
-//  score = 0; //Initial score.
-//  textsize = 20; //Size of texts such as score, levels etc.
-//  streak = 0; //Correct guesses in a row.
-//  streakgoal = 10; //What value streak count must reach to be able to clear screen.
-//   
-//  createArrays();
-//   
-//}
-//
-//
-//
-//void draw() {
-//  noCursor();
-//  background(0); //Black
-//
-//  //player.draw();
-//
-//  //Bad programming?? fix VVVVV
-//  if(zombiesinlevel == 0)
-//  {
-//    if(level == 1)
-//    {
-//      level++;
-//      zombiesinlevel = 12;
-//      spawnrate -= 500;
-//      createArrays();  
-//    }
-//    else if(level == 2)
-//    {
-//      level++;  
-//      zombiesinlevel = 15;
-//      spawnrate -= 500;
-//      createArrays();
-//    }
-//    else if(level == 3)
-//    {
-//      level++;  
-//      zombiesinlevel = 18;
-//      spawnrate -= 500;
-//      createArrays();
-//    } 
-//  }
-//  
-//  //Score text
-//  pushStyle();
-//  fill(color(255));
-//  textSize(textsize);
-//  txt = "Score: " + Integer.toString(score);
-//  text(txt, width - textWidth(txt)-width/70 , height/40); 
-//  popStyle();
-//  
-//  //Streak text
-//  pushStyle();
-//  fill(color(255));
-//  textSize(textsize);
-//  if(streak>=streakgoal)
-//  {
-//    txt = "Press 'c' to clear screen";
-//  }
-//  else
-//  {
-//    txt = "Streak: " + Integer.toString(streak);
-//  }
-//  text(txt, width-textWidth(txt)-10, height/40 + textsize); 
-//  popStyle();
-//  
-//  //Level text
-//  pushStyle();
-//  fill(color(255));
-//  textSize(textsize);
-//  txt = "Level: " + Integer.toString(level);
-//  text(txt, width-textWidth(txt)-width/70, height - textsize); 
-//  popStyle();
-//  
-//  //Spawn rate text
-//  pushStyle();
-//  fill(color(255));
-//  textSize(textsize);
-//  txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
-//  text(txt, width-textWidth(txt)-10, height - 2*textsize); 
-//  popStyle();
-//  
-//  //Zombies left text
-//  pushStyle();
-//  fill(color(255));
-//  textSize(textsize);
-//  txt = "Zombies left: " + Integer.toString(zombiesinlevel); 
-//  text(txt, width-textWidth(txt)-10, height - 3*textsize); 
-//  popStyle();
-//  
-//  //User typing display
-//  pushStyle();
-//  fill(color(255));
-//  textSize(20);
-//  text(typing, 15, 30); 
-//  popStyle();
-//
-//  for (int i=0; i<zombies.size (); i++)
-//  {
-//    zombies.get(i).move();
-//    zombies.get(i).draw();
-//  }
-//
-//
-//  currtime = millis();
-//
-//  if (currtime - starttime >= spawnrate)
-//  {
-//    zombiesinlevel--;
-//    Zombie newzombie = new Zombie(level, equations[iterator], results[iterator]);
-//    zombies.add(newzombie);
-//    starttime = currtime;
-//    iterator++;
-//  }
-//
-//  pushStyle();
-//  fill(color(255));
-//  textSize(20);
-//  text(typing, 15, 30); 
-//  popStyle();
-//  
-//  
-//    player.move();
-//    player.draw();
-//    
-//}
 
-//void keyPressed(){
-//  // PLAYER MOVEMENT WITH THE WASD KEYS
-//  /*if (key == 'w' || key == 'W'){
-//    player.holdingW = true;
-//  }*/
-//  if (key == 'a' || key == 'A'){
-//    player.holdingA = true;
-//  }
-//  /*if (key == 's' || key == 'S'){
-//    player.holdingS = true;
-//  }*/
-//  if (key == 'd' || key == 'D'){
-//    player.holdingD = true;
-//  }
-//}
 
 void keyReleased() 
 {
+  if ( state == 1){
   switch (key)
   {
   case '0':
@@ -540,6 +398,17 @@ void keyReleased()
   if(typingtemp.length() <= 6) 
   {
     typing = typingtemp;
+  }
+  }
+  else if( state == 0){
+  switch (key)
+  {
+  case ENTER:
+    { 
+      state = 1;
+    } 
+    break;
+  }
   }
 }
 

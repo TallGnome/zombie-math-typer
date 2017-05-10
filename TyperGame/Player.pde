@@ -8,8 +8,7 @@ public class Player{
   
   boolean holdingW, holdingA, holdingS, holdingD;
   
-  static final int MOVESPEED = 5;
-  static final int PLAYERSIZE = 40;
+  
  
  Player(){
   
@@ -53,16 +52,16 @@ public class Player{
 
 void move(){
   if(holdingW){
-    y -= MOVESPEED;
+    y -= PLAYERSPEED;
   }
   if(holdingS){
-    y += MOVESPEED;
+    y += PLAYERSPEED;
   }
   if(holdingA){
-    x -= MOVESPEED;
+    x -= PLAYERSPEED;
   }
   if(holdingD){
-    x += MOVESPEED;
+    x += PLAYERSPEED;
   }
 }
 

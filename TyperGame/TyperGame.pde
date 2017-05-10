@@ -1,7 +1,14 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
 
 import ddf.minim.*;
 Minim minim;
-AudioSample zombieSpawn, zombieDeath;
+AudioSample zombieSpawn, zombieDeath, screenMusic, loseHP, thunder;
 AudioPlayer ambience;
 AudioInput input;
 
@@ -53,14 +60,17 @@ void setup() {
   createArrays();
   
   minim = new Minim(this);
-  zombieDeath = minim.loadSample("assets/zombiedeath.mp3");
-  zombieSpawn = minim.loadSample("assets/zombiespawn.mp3");
+
+  zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
+  zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
+  loseHP = minim.loadSample("assets/audio/losehp.mp3");
+  screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
+  thunder = minim.loadSample("assets/audio/thunder.mp3");
   
-  ambience = minim.loadFile("assets/ambience.mp3");
-  input = minim.getLineIn();
-  //ambience.play();
-  
-//  ambience.trigger();
+  ambience = minim.loadFile("assets/audio/ambience.mp3");
+
+  ambience.loop();
+  ambience.setGain(-15.0);
 
 
   
@@ -181,17 +191,26 @@ void draw() {
   popStyle();
  
 
-  for (int i=0; i<zombies.size (); i++)
+   for (int i=0; i<zombies.size (); i++)
   {
     zombies.get(i).draw();
     zombies.get(i).move();
     
-    // If the zombie reaches the end of the screen, deal damage and delete the zombie.
-    if( zombies.get(i).y > height - zombies.get(i).size ){
-      player.health -= 5;
+    if(zombies.get(i).kms == true || zombies.get(i).bot == true)
+    {
+      if(zombies.get(i).kms == true)
+      {
+        player.health -= 10;
+      }
+      else
+      {
+        player.health -= 5;
+        
+      }
       zombies.remove(i);
       streak = 0;
-    }
+      loseHP.trigger();  
+    }   
   }
 
   currtime = millis();

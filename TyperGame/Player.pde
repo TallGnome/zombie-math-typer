@@ -1,34 +1,36 @@
 public class Player{
  
   int velocityX, velocityY;
-  int size;
+  int size, hp;
   int x, y;
+  
+  float health;
+  float max_health;
   
   PImage picture;
   
-  boolean holdingW, holdingA, holdingS, holdingD;
+  //boolean holdingW, holdingS;
+  boolean holdingA, holdingD;
   
   
  
  Player(){
   
   size = PLAYERSIZE;
-  picture = loadImage("assets/PLACEHOLDER.png");
-  picture.resize(size, size);
+  hp = 100;
+  picture = loadImage("assets/MEMEMASTER.png");
+  picture.resize(size, size*2);
   x = width/2;
   y = height - height/5;
-
+  health = MAX_HP;
+  max_health = MAX_HP;
+  
+  
  }
  
  void keyPressed(){
-  if (key == 'w' || key == 'W'){
-    holdingW = true;
-  } 
   if (key == 'a' || key == 'A'){
     holdingA = true;  
-  }
-  if (key == 's' || key == 'S'){
-    holdingS = true;
   }
   if (key == 'd' || key == 'D'){
     holdingD = true;
@@ -36,27 +38,27 @@ public class Player{
  }
  
   void keyReleased(){
-   if (key == 'w' || key == 'W'){
+   /*if (key == 'w' || key == 'W'){
     holdingW = false; 
-   }
+   }*/
    if (key == 'a' || key == 'A'){
     holdingA = false; 
    }
-   if (key == 's' || key == 'S'){
+   /*if (key == 's' || key == 'S'){
     holdingS = false; 
-   }
+   }*/
    if (key == 'd' || key == 'D'){
     holdingD = false; 
    }
  }
 
 void move(){
-  if(holdingW){
-    y -= PLAYERSPEED;
+  /*if(holdingW){
+    y -= MOVESPEED;
   }
   if(holdingS){
-    y += PLAYERSPEED;
-  }
+    y += MOVESPEED;
+  }*/
   if(holdingA){
     x -= PLAYERSPEED;
   }
@@ -69,7 +71,6 @@ void move(){
  void draw(){
     image(picture, x-size/2, y-size/2);
  } 
-  
   
   
 }

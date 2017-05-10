@@ -1,8 +1,9 @@
-import hermes.physics.*;
-import hermes.animation.*;
-import hermes.hshape.*;
-import hermes.postoffice.*;
-import hermes.*;
+
+import ddf.minim.*;
+Minim minim;
+AudioSample zombieSpawn, zombieDeath;
+AudioPlayer ambience;
+AudioInput input;
 
 //import processing.sound.*;
 import java.util.Map;
@@ -29,21 +30,226 @@ Equation eq;
 String[] equations;
 int[] results;
 
-color buttonColor = color(0, 255, 255); 
-color activeColor = color(0,255,0);
-
-ZombieWorld world;
+static final float MAX_HP = 100;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT); 
   frameRate(60);
-  Hermes.setPApplet(this);
-  world = new ZombieWorld();       
-  world.start(); 
+  level = 1;
+  player = new Player();
+  zombiesinlevel = 20;
+  zombies = new ArrayList<Zombie>();
+  starttime = millis();
+  spawnrate = 4000; //ms
+  typing = typingtemp = ""; //Used for user typing display.
+  score = 0; //Initial score.
+  textsize = 20; //Size of texts such as score, levels etc.
+  streak = 0; //Correct guesses in a row.
+  streakgoal = 10; //What value streak count must reach to be able to clear screen.
+
+  createArrays();
+  
+  minim = new Minim(this);
+  zombieDeath = minim.loadSample("assets/zombiedeath.mp3");
+  zombieSpawn = minim.loadSample("assets/zombiespawn.mp3");
+  
+  ambience = minim.loadFile("assets/ambience.mp3");
+  input = minim.getLineIn();
+  //ambience.play();
+  
+//  ambience.trigger();
+
+
+  
+   
 }
 
 void draw() {
-  world.draw();
+  noCursor();
+  background(0); //Black
+  
+
+
+  //player.draw();
+
+  if(zombiesinlevel == 0)
+  {
+    if(level == 1)
+    {
+      level++;
+      zombiesinlevel = 15;
+      spawnrate -= 300;
+      createArrays();  
+    }
+    else if(level == 2)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate -= 250;
+      createArrays();
+    }
+    else if(level == 3)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate -= 250;
+      createArrays();
+    }
+    else if(level == 4)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate -= 250;
+      createArrays();
+    } 
+    else if(level == 5)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate += 3000;
+      createArrays();
+    } 
+  }
+  
+  //GUI
+  
+  //Score text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  txt = "Score: " + Integer.toString(score);
+  text(txt, width - textWidth(txt)-width/70 , height/40+5); 
+  popStyle();
+  
+  //Streak text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  if(streak>=streakgoal)
+  {
+    txt = "Press 'c' to clear screen";
+  }
+  else
+  {
+    txt = "Streak: " + Integer.toString(streak);
+  }
+  text(txt, width-textWidth(txt)-10, height/40 + 5 + textsize); 
+  popStyle();
+  
+  //Level text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  txt = "Level: " + Integer.toString(level);
+  text(txt, width-textWidth(txt)-width/70, height - textsize + 5); 
+  popStyle();
+  
+  //Spawn rate text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
+  text(txt, width-textWidth(txt)-10, height - 2*textsize + 5); 
+  popStyle();
+  
+  //Zombies left text
+  pushStyle();
+  fill(color(255));
+  textSize(textsize);
+  txt = "Zombies left: " + Integer.toString(zombiesinlevel); 
+  text(txt, width-textWidth(txt)-10, height - 3*textsize + 5); 
+  popStyle();
+  
+  //User typing display
+  pushStyle();
+  fill(color(255));
+  textSize(20);
+  text(typing, player.x-textWidth(typing)/2, player.y+player.size*2); 
+  popStyle();
+
+  //Health bar
+  pushStyle();
+  stroke(color(255), 100);
+  noFill();
+  rect(width/2-101, 15, 202, 40, 7);
+  popStyle(); 
+  pushStyle();
+  fill(204, 102, 0);
+  rect(width/2-100, 16, player.hp*2, 38, 7);
+  popStyle();
+ 
+
+  for (int i=0; i<zombies.size (); i++)
+  {
+    zombies.get(i).draw();
+    zombies.get(i).move();
+    
+    // If the zombie reaches the end of the screen, deal damage and delete the zombie.
+    if( zombies.get(i).y > height - zombies.get(i).size ){
+      player.health -= 5;
+      zombies.remove(i);
+      streak = 0;
+    }
+  }
+
+  currtime = millis();
+
+  if (currtime - starttime >= spawnrate)
+  {
+    zombiesinlevel--;
+    Zombie newzombie = new Zombie(level, equations[iterator], results[iterator]);
+    zombies.add(newzombie);
+    starttime = currtime;
+    iterator++;
+    zombieSpawn.trigger();
+
+
+    
+  }
+
+  player.move();
+  player.draw();
+    
+  //Health bar
+  pushStyle();
+  stroke(color(255), 100);
+  noFill();
+  rect(width/2-101, 15, 202, 40, 7);
+  popStyle(); 
+  pushStyle();
+  
+  if (player.health > MAX_HP){
+     player.health = MAX_HP;
+  }
+  if (player.health < 0){
+     player.health = 0; 
+  }
+  if (player.health < 26){
+    fill(255, 29, 0);
+  }else if (player.health < 51){
+    fill(255, 161, 0);
+  }else{
+    fill(26, 201, 0);
+  }
+  rect(width/2-100, 16, player.health*2, 38, 5);
+  popStyle();
+    
+}
+
+void keyPressed(){
+  // PLAYER MOVEMENT WITH THE WASD KEYS
+  /*if (key == 'w' || key == 'W'){
+    player.holdingW = true;
+  }*/
+  if (key == 'a' || key == 'A'){
+    player.holdingA = true;
+  }
+  /*if (key == 's' || key == 'S'){
+    player.holdingS = true;
+  }*/
+  if (key == 'd' || key == 'D'){
+    player.holdingD = true;  
+  }
 }
 //void setup() {
 //  size(800, 640); 
@@ -199,148 +405,150 @@ void draw() {
 //  }
 //}
 
-//
-//void keyReleased() 
-//{
-//  switch (key)
-//  {
-//  case '0':
-//    { 
-//      typingtemp += "0";
-//    } 
-//    break;
-//  case '1':
-//    { 
-//      typingtemp += "1";
-//    } 
-//    break;
-//  case '2':
-//    { 
-//      typingtemp += "2";
-//    } 
-//    break;
-//  case '3':
-//    { 
-//      typingtemp += "3";
-//    } 
-//    break;  
-//  case '4':
-//    { 
-//      typingtemp += "4";
-//    } 
-//    break;
-//  case '5':
-//    { 
-//      typingtemp += "5";
-//    } 
-//    break;  
-//  case '6':
-//    { 
-//      typingtemp += "6";
-//    } 
-//    break;
-//  case '7':
-//    { 
-//      typingtemp += "7";
-//    } 
-//    break;  
-//  case '8':
-//    { 
-//      typingtemp += "8";
-//    } 
-//    break;
-//  case '9':
-//    { 
-//      typingtemp += "9";
-//    } 
-//    break; 
-//  case '-':
-//    {
-//      if(typingtemp == "")
-//      {
-//        typingtemp += "-";
-//      }
-//    }
-//    break;
-//  case 'c':
-//    { 
-//      if(streak >= streakgoal)
-//      {
-//        score += zombies.size();
-//        zombies = new ArrayList<Zombie>();
-//        streak = 0;
-//      }
-//    } 
-//  break;   
-//  case ENTER:
-//    {
-//      if (typing.length() > 0)
-//      {
-//        if (checkAnswer(typing))
-//        {
-//          score++;
-//          streak++;
-//          //file = new SoundFile(this, "correct.mp3");
-//          //file.play();
-//        } else
-//        {
-//          streak = 0;
-//          //file = new SoundFile(this, "wrong.mp3");
-//          //file.play();
-//        }
-//      }
-//    } 
-//    typingtemp = "";
-//    break;
-//  case BACKSPACE:
-//    { 
-//      if (typing.length() > 0)
-//      {
-//        typing = typing.substring(0, typing.length() - 1);
-//        typingtemp = typing;
-//      }
-//    }
-//    // PLAYER MOVEMENT CANCEL ON RELEASE
-//   /*case 'w':
-//   {
-//     player.holdingW = false;
-//   }
-//   case 's':
-//   {
-//     player.holdingS = false;
-//   }*/
-//   case 'a':
-//   {
-//     player.holdingA = false;
-//   }
-//   break;
-//   case 'd':
-//   {
-//     player.holdingD = false;
-//   }
-//    break;
-//   case 'A':
-//   {
-//     player.holdingA = false;
-//   }
-//   break;
-//   case 'D':
-//   {
-//     player.holdingD = false;
-//   }
-//    break;
-//  default: 
-//    break;
-//  }
-//  if(typingtemp.length() <= 6) 
-//  {
-//    typing = typingtemp;
-//  }
-//}
+void keyReleased() 
+{
+  switch (key)
+  {
+  case '0':
+    { 
+      typingtemp += "0";
+    } 
+    break;
+  case '1':
+    { 
+      typingtemp += "1";
+    } 
+    break;
+  case '2':
+    { 
+      typingtemp += "2";
+    } 
+    break;
+  case '3':
+    { 
+      typingtemp += "3";
+    } 
+    break;  
+  case '4':
+    { 
+      typingtemp += "4";
+    } 
+    break;
+  case '5':
+    { 
+      typingtemp += "5";
+    } 
+    break;  
+  case '6':
+    { 
+      typingtemp += "6";
+    } 
+    break;
+  case '7':
+    { 
+      typingtemp += "7";
+    } 
+    break;  
+  case '8':
+    { 
+      typingtemp += "8";
+    } 
+    break;
+  case '9':
+    { 
+      typingtemp += "9";
+    } 
+    break; 
+  case '-':
+    {
+      if(typingtemp == "")
+      {
+        typingtemp += "-";
+      }
+    }
+    break;
+  case 'c':
+    { 
+      if(streak >= streakgoal)
+      {
+        score += zombies.size();
+        zombies = new ArrayList<Zombie>();
+        streak = 0;
+      }
+    } 
+  break;   
+  case ENTER:
+    {
+      if (typing.length() > 0)
+      {
+        if (checkAnswer(typing))
+        {
+          score++;
+          streak++;
+          //file = new SoundFile(this, "correct.mp3");
+          //file.play();
+        } else
+        {
+          streak = 0;
+          //file = new SoundFile(this, "wrong.mp3");
+          //file.play();
+        }
+      }
+    } 
+    typingtemp = "";
+    break;
+  case BACKSPACE:
+    { 
+      if (typing.length() > 0)
+      {
+        typing = typing.substring(0, typing.length() - 1);
+        typingtemp = typing;
+      }
+    }
+    // PLAYER MOVEMENT CANCEL ON RELEASE
+   /*case 'w':
+   {
+     player.holdingW = false;
+   }
+   case 's':
+   {
+     player.holdingS = false;
+   }*/
+   case 'a':
+   {
+     player.holdingA = false;
+   }
+   break;
+   case 'd':
+   {
+     player.holdingD = false;
+   }
+    break;
+   case 'A':
+   {
+     player.holdingA = false;
+   }
+   break;
+   case 'D':
+   {
+     player.holdingD = false;
+   }
+    break;
+  default: 
+    break;
+  }
+  if(typingtemp.length() <= 6) 
+  {
+    typing = typingtemp;
+  }
+}
 
 boolean checkAnswer(String answer)
 {
   boolean correct = false;
+  if (answer == "-"){
+    answer = "0";
+  }
   int answerToInt = Integer.parseInt(answer);
   for (int i=0; i < zombies.size (); i++)
   {
@@ -348,6 +556,9 @@ boolean checkAnswer(String answer)
     {
       zombies.remove(i);
       correct = true;
+      player.health += 2.5;
+      zombieDeath.trigger();
+
     }
   }
   return correct;
@@ -356,7 +567,6 @@ boolean checkAnswer(String answer)
 void createArrays()
 {
   
-  //TO PARAKATW EINAI TO XEIROTERO PRAGMA POU EXEI FTIAXTEI STIN ISTORIA TOU PROGRAMATISMOU!!! ALLA DOULEVEI PROS TO PARWN!!!
   iterator = 0;
   equations = new String[zombiesinlevel];
   results = new int[zombiesinlevel];

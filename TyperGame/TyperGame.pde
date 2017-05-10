@@ -122,8 +122,14 @@ void draw() {
 
   for (int i=0; i<zombies.size (); i++)
   {
-    zombies.get(i).move();
     zombies.get(i).draw();
+    zombies.get(i).move();
+    
+    // If the zombie reaches the end of the screen, deal damage and delete the zombie.
+    if( zombies.get(i).y == height - zombies.get(i).size ){
+      player.health -= 5;
+      zombies.remove(i);
+    }
   }
 
 

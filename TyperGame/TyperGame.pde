@@ -38,6 +38,7 @@ Equation eq;
 String[] equations;
 int[] results;
 int state;
+static int player_image;
 
 static final float MAX_HP = 100;
 
@@ -130,7 +131,7 @@ void draw() {
 
   }
   //STATE 0 IS MAIN MENU
-  else if(state == 0){
+  else if(state == MAIN_STATE){
     image(loadImage("assets/welcome.jpg"), 0, 0, width, height);
     pushStyle();
     fill(color(200, 200, 200, 80));
@@ -147,6 +148,19 @@ void draw() {
     textSize(24);
     text("Press ENTER to continue...", width/2 - 155, height/2); 
   } 
+  else if(state == END_STATE){
+    fill(255, 0, 0);    
+    textSize(36);
+    text("GAME OVER", width/2 - 155, height/2);
+    
+    textSize(26);
+    text("Your score: "+ score, width/2 - 155, height/2 + 25);
+    text("Your level: "+ level, width/2 - 155, height/2 + 55);
+    text("Press ENTER to exit", width/2 - 145, height/2 + 80);
+    text("Press r to go to the main screen ", width/2 - 145, height/2 + 100);
+  }
+  else if(state == SELECTION_STATE){
+  }
 }
 
 void keyPressed(){
@@ -177,14 +191,19 @@ void keyPressed(){
 
 
 void keyReleased(){
-  if(key == ESC){
-    
-  }
   if ( state == PLAY_STATE){
     handleKeysForPlayState(key);
   }
   else if( state == MAIN_STATE){
     handleKeysForMainState(key);
+  }
+  else if(state == END_STATE){
+    if(key == ENTER){
+      exit();
+    }
+    else if (key == 'r' || key == 'R'){
+      state = MAIN_STATE;
+    }
   }
 }
 
@@ -419,7 +438,8 @@ void drawHealthBar(){
        player.health = MAX_HP;
     }
     if (player.health < 0){
-       player.health = 0; 
+       player.health = 0;
+      state = END_STATE; 
     }
     if (player.health < 26){
       fill(255, 29, 0);

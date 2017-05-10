@@ -7,7 +7,7 @@ public class Zombie
   
   Zombie(int lvl, String eq, int result)
   {
-    size = (int) random(40, 80);
+    size = (int) random(35, 90);
     speed = getSpeed(lvl);
     picture = loadImage("assets/zombie.png");
     picture.resize(size,size);

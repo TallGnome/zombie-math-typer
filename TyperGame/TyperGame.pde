@@ -1,7 +1,9 @@
 
 import ddf.minim.*;
 Minim minim;
-AudioSample zombieSpawn, zombieDeath, ambience;
+AudioSample zombieSpawn, zombieDeath;
+AudioPlayer ambience;
+AudioInput input;
 
 //import processing.sound.*;
 import java.util.Map;
@@ -38,6 +40,10 @@ void setup() {
   minim = new Minim(this);
   zombieDeath = minim.loadSample("assets/zombiedeath.mp3");
   zombieSpawn = minim.loadSample("assets/zombiespawn.mp3");
+  
+  ambience = minim.loadFile("assets/ambience.mp3");
+  input = minim.getLineIn();
+  //ambience.play();
   
 //  ambience.trigger();
 
@@ -378,7 +384,7 @@ void keyReleased()
 boolean checkAnswer(String answer)
 {
   boolean correct = false;
-  if (answer == "-");{
+  if (answer == "-"){
     answer = "0";
   }
   int answerToInt = Integer.parseInt(answer);
@@ -388,12 +394,9 @@ boolean checkAnswer(String answer)
     {
       zombies.remove(i);
       correct = true;
-<<<<<<< HEAD
       player.health += 2.5;
-=======
-      player.health += 5;
       zombieDeath.trigger();
->>>>>>> b70f2359a98787c371534437089cc954f096f5cd
+
     }
   }
   return correct;

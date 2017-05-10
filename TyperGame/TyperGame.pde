@@ -60,7 +60,7 @@ void draw() {
     }
     else if(level == 3)
     {
-      level++;  
+      //level++;  
       zombiesinlevel = 18;
       spawnrate -= 500;
       createArrays();

@@ -4,12 +4,17 @@ public class Player{
   int size;
   int x, y;
   
+  float health;
+  float max_health;
+  
   PImage picture;
   
   boolean holdingW, holdingA, holdingS, holdingD;
   
   static final int MOVESPEED = 5;
   static final int PLAYERSIZE = 40;
+  static final float MAX_HP = 100;
+  static final float rectWidth = 200;
  
  Player(){
   
@@ -18,7 +23,10 @@ public class Player{
   picture.resize(size, size);
   x = width/2;
   y = height - height/5;
-
+  health = MAX_HP;
+  max_health = MAX_HP;
+  
+  
  }
  
  void keyPressed(){

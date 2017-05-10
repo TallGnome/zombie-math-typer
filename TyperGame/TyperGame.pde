@@ -145,8 +145,25 @@ void draw() {
   popStyle();
   
   
-    player.move();
-    player.draw();
+  player.move();
+  player.draw();
+    
+  //Health bar
+  pushStyle();
+  stroke(color(255), 100);
+  noFill();
+  rect(width/2-101, 15, 202, 40, 7);
+  popStyle(); 
+  pushStyle();
+  if (player.health < 26){
+    fill(255, 29, 0);
+  }else if (player.health < 51){
+    fill(255, 161, 0);
+  }else{
+    fill(26, 201, 0);
+  }
+  rect(width/2-100, 16, player.health*2, 38, 5);
+  popStyle();
     
 }
 

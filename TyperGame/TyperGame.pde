@@ -338,6 +338,7 @@ boolean checkAnswer(String answer)
     {
       zombies.remove(i);
       correct = true;
+      player.health += 5;
     }
   }
   return correct;

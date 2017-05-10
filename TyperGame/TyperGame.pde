@@ -123,6 +123,7 @@ void draw() {
     }
     
     
+    
 
     player.move();
     player.draw();
@@ -152,6 +153,23 @@ void draw() {
 }
 
 void keyPressed(){
+  if(!looping && key == 'y'){
+        exit();
+    }
+  if(key == ESC || key == 'p'){
+    if(looping){
+      fill(255, 0 , 0);    
+      textSize(42);
+      text("ARE YOU SURE YOU WANT TO EXIT?", width/2 - 320, height/2 - 50); 
+      textSize(28);
+      text("PRESS Y TO EXIT \n OR PRESS ESC TO CONTINUE", width/2 - 300, height/2);
+      key = "Z".charAt(0);
+      noLoop();
+    }else{
+      loop();
+      key = "Z".charAt(0);
+    }
+  }
   if (key == 'a' || key == 'A'){
     player.holdingA = true;
   }
@@ -162,6 +180,9 @@ void keyPressed(){
 
 
 void keyReleased(){
+  if(key == ESC){
+    
+  }
   if ( state == PLAY_STATE){
     handleKeysForPlayState(key);
   }
@@ -256,14 +277,18 @@ void handleKeysForPlayState(char k){
       
       case ENTER:{
           if (typing.length() > 0){
-            if (checkAnswer(typing)){
-              score++;
-              streak++;
-            } else{
-              streak = 0;
+            if (typing.length() > 0){
+            if (!typing.equals("-")){
+              if (checkAnswer(typing)){
+                score++;
+                streak++;
+              } else{
+                streak = 0;
+              }
             }
           }
-       } 
+       }
+      } 
        typingtemp = "";
        break;
        
@@ -422,19 +447,19 @@ void populateZombies(){
     else if(level == 2){
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 250;
+      spawnrate -= 300;
       createArrays();
     }
     else if(level == 3){
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 250;
+      spawnrate -= 300;
       createArrays();
     }
     else if(level == 4){
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 250;
+      spawnrate -= 300;
       createArrays();
     } 
     else if(level == 5){

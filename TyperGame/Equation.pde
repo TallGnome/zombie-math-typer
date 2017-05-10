@@ -10,10 +10,10 @@ public class Equation{
     switch(difficulty){
       case 1:{
         this.operator = new int [1];
-        this.operator[0] = (int) random(2)+1;
+        this.operator[0] = 1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,49);
+          this.values[i] = (int) random(1,20);
         }
       } break;
       case 2:{
@@ -21,7 +21,7 @@ public class Equation{
         this.operator[0] = (int) random(2)+1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,100);
+          this.values[i] = (int) random(5,30);
         }
       } break;
       case 3:{
@@ -29,29 +29,29 @@ public class Equation{
         this.operator[0] = (int) random(2)+1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(5,70);
+          this.values[i] = (int) random(10,50);
         }
       } break;
       case 4:{
         this.operator = new int [1];
-        this.operator[0] = (int) random(3)+2;
+        this.operator[0] = (int) random(3)+1;
         this.values = new int [2];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(3,50);
+          this.values[i] = (int) random(20,60);
         }
       } break;
       case 5:{
         this.operator = new int [2];
-        this.operator[0] = (int) random(2)+2;
+        this.operator[0] = (int) random(2)+1;
         this.operator[1] = (int) random(2)+1;
         this.values = new int [3];
         for(int i = 0; i < this.values.length; i++){
-          this.values[i] = (int) random(1,30);
+          this.values[i] = (int) random(1,100);
         }
       } break;
       case 6:{
         this.operator = new int [3];
-        this.operator[0] = (int) random(3)+2;
+        this.operator[0] = (int) random(2)+1;
         this.operator[1] = (int) random(2)+1;
         this.operator[2] = (int) random(2)+1;
         this.values = new int [4];

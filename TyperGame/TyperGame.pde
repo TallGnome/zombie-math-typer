@@ -1,5 +1,31 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
+
+import ddf.minim.*;
+Minim minim;
+AudioSample zombieSpawn, zombieDeath, screenMusic, loseHP, thunder;
+AudioPlayer ambience;
+AudioInput input;
+
 //import processing.sound.*;
 import java.util.Map;
+
+
+static final int WINDOW_WIDTH = 800;
+static final int WINDOW_HEIGHT = 640;
+
+static final int PLAYERSPEED = 5;
+static final int PLAYERSIZE = 50; 
+
+static final int CREDITS = 0;
+static final int WELCOME = 1;
+static final int OPTIONS = 2;
+static final int GAME = 3;
 
 //SoundFile file;
 ArrayList<Zombie> zombies;
@@ -10,16 +36,17 @@ HashMap<String, Integer> hash;
 Equation eq;
 String[] equations;
 int[] results;
+int state;
 
+static final float MAX_HP = 100;
 
 void setup() {
-  size(800, 640); 
+  size(WINDOW_WIDTH, WINDOW_HEIGHT); 
   frameRate(60);
   level = 1;
   player = new Player();
-  zombiesinlevel = 8;
+  zombiesinlevel = 20;
   zombies = new ArrayList<Zombie>();
-  //player = new Player(50);
   starttime = millis();
   spawnrate = 4000; //ms
   typing = typingtemp = ""; //Used for user typing display.
@@ -27,51 +54,83 @@ void setup() {
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Correct guesses in a row.
   streakgoal = 10; //What value streak count must reach to be able to clear screen.
-   
+  
+  state = 0;
+
   createArrays();
+  
+  minim = new Minim(this);
+
+  zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
+  zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
+  loseHP = minim.loadSample("assets/audio/losehp.mp3");
+  screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
+  thunder = minim.loadSample("assets/audio/thunder.mp3");
+  
+  ambience = minim.loadFile("assets/audio/ambience.mp3");
+
+  ambience.loop();
+  ambience.setGain(-15.0);
+
+
+  
    
 }
-
-
 
 void draw() {
   noCursor();
   background(0); //Black
-
-  //player.draw();
-
-  //Bad programming?? fix VVVVV
+  
+  // STATE 1 IS GAME STATE
+  if (state == 1){
+    
   if(zombiesinlevel == 0)
   {
     if(level == 1)
     {
       level++;
-      zombiesinlevel = 12;
-      spawnrate -= 500;
+      zombiesinlevel = 15;
+      spawnrate -= 300;
       createArrays();  
     }
     else if(level == 2)
     {
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 500;
+      spawnrate -= 250;
       createArrays();
     }
     else if(level == 3)
     {
       level++;  
-      zombiesinlevel = 18;
-      spawnrate -= 500;
+      zombiesinlevel = 15;
+      spawnrate -= 250;
+      createArrays();
+    }
+    else if(level == 4)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate -= 250;
+      createArrays();
+    } 
+    else if(level == 5)
+    {
+      level++;  
+      zombiesinlevel = 15;
+      spawnrate += 3000;
       createArrays();
     } 
   }
+  
+  //GUI
   
   //Score text
   pushStyle();
   fill(color(255));
   textSize(textsize);
   txt = "Score: " + Integer.toString(score);
-  text(txt, width - textWidth(txt)-width/70 , height/40); 
+  text(txt, width - textWidth(txt)-width/70 , height/40+5); 
   popStyle();
   
   //Streak text
@@ -86,7 +145,7 @@ void draw() {
   {
     txt = "Streak: " + Integer.toString(streak);
   }
-  text(txt, width-textWidth(txt)-10, height/40 + textsize); 
+  text(txt, width-textWidth(txt)-10, height/40 + 5 + textsize); 
   popStyle();
   
   //Level text
@@ -94,7 +153,7 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Level: " + Integer.toString(level);
-  text(txt, width-textWidth(txt)-width/70, height - textsize); 
+  text(txt, width-textWidth(txt)-width/70, height - textsize + 5); 
   popStyle();
   
   //Spawn rate text
@@ -102,7 +161,7 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
-  text(txt, width-textWidth(txt)-10, height - 2*textsize); 
+  text(txt, width-textWidth(txt)-10, height - 2*textsize + 5); 
   popStyle();
   
   //Zombies left text
@@ -110,22 +169,49 @@ void draw() {
   fill(color(255));
   textSize(textsize);
   txt = "Zombies left: " + Integer.toString(zombiesinlevel); 
-  text(txt, width-textWidth(txt)-10, height - 3*textsize); 
+  text(txt, width-textWidth(txt)-10, height - 3*textsize + 5); 
   popStyle();
   
   //User typing display
   pushStyle();
   fill(color(255));
   textSize(20);
-  text(typing, 15, 30); 
+  text(typing, player.x-textWidth(typing)/2, player.y+player.size*2); 
   popStyle();
 
-  for (int i=0; i<zombies.size (); i++)
-  {
-    zombies.get(i).move();
-    zombies.get(i).draw();
-  }
+  //Health bar
+  pushStyle();
+  stroke(color(255), 100);
+  noFill();
+  rect(width/2-101, 15, 202, 40, 7);
+  popStyle(); 
+  pushStyle();
+  fill(204, 102, 0);
+  rect(width/2-100, 16, player.hp*2, 38, 7);
+  popStyle();
+ 
 
+   for (int i=0; i<zombies.size (); i++)
+  {
+    zombies.get(i).draw();
+    zombies.get(i).move();
+    
+    if(zombies.get(i).kms == true || zombies.get(i).bot == true)
+    {
+      if(zombies.get(i).kms == true)
+      {
+        player.health -= 10;
+      }
+      else
+      {
+        player.health -= 5;
+        
+      }
+      zombies.remove(i);
+      streak = 0;
+      loseHP.trigger();  
+    }   
+  }
 
   currtime = millis();
 
@@ -136,17 +222,45 @@ void draw() {
     zombies.add(newzombie);
     starttime = currtime;
     iterator++;
+    zombieSpawn.trigger();
+
+
+    
   }
 
+  player.move();
+  player.draw();
+    
+  //Health bar
   pushStyle();
-  fill(color(255));
-  textSize(20);
-  text(typing, 15, 30); 
+  stroke(color(255), 100);
+  noFill();
+  rect(width/2-101, 15, 202, 40, 7);
+  popStyle(); 
+  pushStyle();
+  
+  if (player.health > MAX_HP){
+     player.health = MAX_HP;
+  }
+  if (player.health < 0){
+     player.health = 0; 
+  }
+  if (player.health < 26){
+    fill(255, 29, 0);
+  }else if (player.health < 51){
+    fill(255, 161, 0);
+  }else{
+    fill(26, 201, 0);
+  }
+  rect(width/2-100, 16, player.health*2, 38, 5);
   popStyle();
-  
-  
-    player.move();
-    player.draw();
+  }
+  //STATE 0 IS MAIN MENU
+  else if(state == 0){
+    textSize(32);
+    text("state 0 IS MAIN MENU", 10, 30); 
+    fill(0, 102, 153);
+  }
     
 }
 
@@ -162,13 +276,14 @@ void keyPressed(){
     player.holdingS = true;
   }*/
   if (key == 'd' || key == 'D'){
-    player.holdingD = true;
+    player.holdingD = true;  
   }
 }
 
 
 void keyReleased() 
 {
+  if ( state == 1){
   switch (key)
   {
   case '0':
@@ -280,7 +395,18 @@ void keyReleased()
    {
      player.holdingA = false;
    }
+   break;
    case 'd':
+   {
+     player.holdingD = false;
+   }
+    break;
+   case 'A':
+   {
+     player.holdingA = false;
+   }
+   break;
+   case 'D':
    {
      player.holdingD = false;
    }
@@ -292,11 +418,25 @@ void keyReleased()
   {
     typing = typingtemp;
   }
+  }
+  else if( state == 0){
+  switch (key)
+  {
+  case ENTER:
+    { 
+      state = 1;
+    } 
+    break;
+  }
+  }
 }
 
 boolean checkAnswer(String answer)
 {
   boolean correct = false;
+  if (answer == "-"){
+    answer = "0";
+  }
   int answerToInt = Integer.parseInt(answer);
   for (int i=0; i < zombies.size (); i++)
   {
@@ -304,6 +444,9 @@ boolean checkAnswer(String answer)
     {
       zombies.remove(i);
       correct = true;
+      player.health += 2.5;
+      zombieDeath.trigger();
+
     }
   }
   return correct;
@@ -312,7 +455,6 @@ boolean checkAnswer(String answer)
 void createArrays()
 {
   
-  //TO PARAKATW EINAI TO XEIROTERO PRAGMA POU EXEI FTIAXTEI STIN ISTORIA TOU PROGRAMATISMOU!!! ALLA DOULEVEI PROS TO PARWN!!!
   iterator = 0;
   equations = new String[zombiesinlevel];
   results = new int[zombiesinlevel];

@@ -2,15 +2,16 @@ class BeingZombie extends MassedBeing{
 
   
   private PImage character;
-  private int x, y, solution, speed, txtSize, level, damage;
+  private int x, y, solution, speed, level, damage;
   private boolean left, right;
   private int char_size;
   private String equation;
+  private boolean remove = false;
   
    BeingZombie(int x, int size, int lvl, String eq, int result){
-     super(new HRectangle(x, 0, size, size), new PVector(0,0), Float.POSITIVE_INFINITY, 1);   
+     super(new HRectangle(x, 0, size, size+20), new PVector(0,0), Float.POSITIVE_INFINITY, 1);   
      character = loadImage ("assets/zombie.png");
-     char_size = size;
+     this.char_size = size;
      this.x = x;
      this.level = lvl;
      this.equation = eq;
@@ -27,6 +28,10 @@ class BeingZombie extends MassedBeing{
    }
    
   public void update() {
+    if((_shape.getPosition().y + (this.char_size/2)) <= height){
+      println("reached end");
+      this.remove = true;
+    }
     move();
   }
   
@@ -44,10 +49,13 @@ class BeingZombie extends MassedBeing{
   void draw(){
 //     fill(0);
 //     _shape.draw();
-    image (character, 0,0, char_size, char_size); 
+    image (character, 0,0, char_size, char_size-18); 
+    textSize(18);
+    fill(255, 100, 100);
+    text(this.equation, 10, char_size); 
    }
    
-   int getSpeed(int lvl)
+  int getSpeed(int lvl)
   {
     int sp = 0;
     switch (lvl)
@@ -73,5 +81,9 @@ class BeingZombie extends MassedBeing{
     return sp;
   }
   
+  
+  boolean toRemove(){
+    return this.remove;
+  }
    
 } 

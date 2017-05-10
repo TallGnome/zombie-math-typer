@@ -26,6 +26,6 @@ class Button extends Being {
       _shape.draw();
       fill(0);
       textSize(16);
-      text(_text, 50, 20); //text is drawn in relation to the shapes origin.
+      text(_text, 10, 15); //text is drawn in relation to the shapes origin.
   }
 }

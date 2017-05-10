@@ -37,7 +37,6 @@ public class Zombie
   
   float getSpeed(int lvl)
   {
-    int sp = 0;
     switch (lvl)
     {
       case 1:
@@ -58,7 +57,7 @@ public class Zombie
       default: 
         break;
     }
-    return sp;
+    return this.speed;
   }
   
   float randomMovement(int x)

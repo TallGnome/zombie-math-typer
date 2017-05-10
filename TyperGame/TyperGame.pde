@@ -1,7 +1,14 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
 
 import ddf.minim.*;
 Minim minim;
-AudioSample zombieSpawn, zombieDeath;
+AudioSample zombieSpawn, zombieDeath, screenMusic, loseHP, thunder;
 AudioPlayer ambience;
 AudioInput input;
 
@@ -55,14 +62,17 @@ void setup() {
   createArrays();
   
   minim = new Minim(this);
-  zombieDeath = minim.loadSample("assets/zombiedeath.mp3");
-  zombieSpawn = minim.loadSample("assets/zombiespawn.mp3");
+
+  zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
+  zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
+  loseHP = minim.loadSample("assets/audio/losehp.mp3");
+  screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
+  thunder = minim.loadSample("assets/audio/thunder.mp3");
   
-  ambience = minim.loadFile("assets/ambience.mp3");
-  input = minim.getLineIn();
-  //ambience.play();
-  
-//  ambience.trigger();
+  ambience = minim.loadFile("assets/audio/ambience.mp3");
+
+  ambience.loop();
+  ambience.setGain(-15.0);
 
 
   
@@ -288,6 +298,10 @@ void drawZombies(){
       starttime = currtime;
       iterator++;
       zombieSpawn.trigger();
+      if (random(-10,1) > 0){
+        background(100);
+        thunder.trigger();
+      }
     }
 }
 

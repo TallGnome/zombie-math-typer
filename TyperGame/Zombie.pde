@@ -1,13 +1,17 @@
 public class Zombie
 {
+
   private int x, y, size, solution, txtSize, level, xMovement;
   private float speed;
   private String equation;
   private PImage picture;
+  private boolean kms, bot;
   
   Zombie(int lvl, String eq, int result)
   {
-    this.size = (int) random(35, 90);
+    this.kms = false;
+    this.bot = false;
+    this.size = (int) random(40, 80);
     this.speed = getSpeed(lvl);
     //damage = getDamage(lvl);
     this.picture = loadImage("assets/zombie.png");
@@ -16,23 +20,46 @@ public class Zombie
     this.y = this.size; 
     this.equation = eq;
     this.solution = result;
-    this.xMovement = (int) random(-2,2);    
+    this.xMovement = (int) random(-3,3);    
     this.txtSize = 20;
     this.level = lvl;
+
   }
   
   void move()
   {
     this.y += this.speed;
+    
+    //Bounce on walls
+    if(this.xMovement != 0)
+    {
+       if(width-this.x < this.size/2 || this.x < this.size/2)
+        {
+          this.xMovement *= -1;
+        }
+    }
+   
     this.x += this.xMovement;
   }
   
   void draw()
-  {
-    image(this.picture, x-size/2, y-size/2);
+  {  
+   //If zombie collides with player or the floor
+    if(dist(this.x,this.y,player.getX(),player.getY()) <= this.size)
+    {
+      this.kms = true;
+    }
+    
+    if(this.y > height + this.size/4)
+    {
+      this.bot = true;
+    }
+    
+    image(this.picture, this.x-this.size/2, this.y-this.size/2);
     String txt = this.equation;
-    textSize(this.txtSize);
-    text(txt, this.x - textWidth(txt)/2, this.y + this.size/2 + this.txtSize);
+    textSize(txtSize);
+    text(txt, this.x - textWidth(txt)/2, this.y + this.size/2+txtSize);
+
   }
   
   float getSpeed(int lvl)

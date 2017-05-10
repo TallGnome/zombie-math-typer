@@ -59,6 +59,14 @@ void move(){
  void draw(){
     image(this.picture, this.x - this.size / 2, this.y - this.size / 2);
  } 
+ 
+ public int getX(){
+   return x;
+ }
+ 
+ public int getY(){
+  return y;
+ }
   
   
 }

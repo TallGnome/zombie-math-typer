@@ -1,3 +1,8 @@
+
+import ddf.minim.*;
+Minim minim;
+AudioSample zombieSpawn, zombieDeath, ambience;
+
 //import processing.sound.*;
 import java.util.Map;
 
@@ -19,7 +24,6 @@ void setup() {
   player = new Player();
   zombiesinlevel = 8;
   zombies = new ArrayList<Zombie>();
-  //player = new Player(50);
   starttime = millis();
   spawnrate = 4000; //ms
   typing = typingtemp = ""; //Used for user typing display.
@@ -27,8 +31,17 @@ void setup() {
   textsize = 20; //Size of texts such as score, levels etc.
   streak = 0; //Correct guesses in a row.
   streakgoal = 10; //What value streak count must reach to be able to clear screen.
-   
+
   createArrays();
+  
+  minim = new Minim(this);
+  zombieDeath = minim.loadSample("assets/zombiedeath.mp3");
+  zombieSpawn = minim.loadSample("assets/zombiespawn.mp3");
+  
+//  ambience.trigger();
+
+
+  
    
 }
 
@@ -37,10 +50,11 @@ void setup() {
 void draw() {
   noCursor();
   background(0); //Black
+  
+
 
   //player.draw();
 
-  //Bad programming?? fix VVVVV
   if(zombiesinlevel == 0)
   {
     if(level == 1)
@@ -160,7 +174,6 @@ void draw() {
     }
   }
 
-
   currtime = millis();
 
   if (currtime - starttime >= spawnrate)
@@ -170,6 +183,10 @@ void draw() {
     zombies.add(newzombie);
     starttime = currtime;
     iterator++;
+    zombieSpawn.trigger();
+
+
+    
   }
 
   player.move();
@@ -206,7 +223,7 @@ void keyPressed(){
     player.holdingS = true;
   }*/
   if (key == 'd' || key == 'D'){
-    player.holdingD = true;
+    player.holdingD = true;  
   }
 }
 
@@ -360,6 +377,7 @@ boolean checkAnswer(String answer)
       zombies.remove(i);
       correct = true;
       player.health += 5;
+      zombieDeath.trigger();
     }
   }
   return correct;
@@ -368,7 +386,6 @@ boolean checkAnswer(String answer)
 void createArrays()
 {
   
-  //TO PARAKATW EINAI TO XEIROTERO PRAGMA POU EXEI FTIAXTEI STIN ISTORIA TOU PROGRAMATISMOU!!! ALLA DOULEVEI PROS TO PARWN!!!
   iterator = 0;
   equations = new String[zombiesinlevel];
   results = new int[zombiesinlevel];

@@ -99,20 +99,30 @@ void draw() {
     //User typing display
     drawUserTypingDisplay();
  
+ 
+     drawZombies();
 
     for (int i=0; i<zombies.size (); i++){
       zombies.get(i).draw();
       zombies.get(i).move();
       
-      // If the zombie reaches the end of the screen, deal damage and delete the zombie.
-      if( zombies.get(i).y > height - zombies.get(i).size ){
-        player.health -= 5;
+     if(zombies.get(i).kms == true || zombies.get(i).bot == true){
+        if(zombies.get(i).kms == true)
+        {
+          player.health -= 10;
+        }
+        else
+        {
+          player.health -= 5;
+  
+        }
         zombies.remove(i);
         streak = 0;
+        loseHP.trigger();
       }
     }
     
-    drawZombies();
+    
 
     player.move();
     player.draw();
@@ -303,6 +313,7 @@ void drawZombies(){
         thunder.trigger();
       }
     }
+    
 }
 
 void drawUserTypingDisplay(){

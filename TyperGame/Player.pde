@@ -8,7 +8,7 @@ public class Player{
   
   boolean holdingW, holdingA, holdingS, holdingD;
   
-  static final int MOVESPEED = 10;
+  static final int MOVESPEED = 5;
   static final int PLAYERSIZE = 40;
  
  Player(){

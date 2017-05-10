@@ -280,6 +280,7 @@ void keyReleased()
    {
      player.holdingA = false;
    }
+   break;
    case 'd':
    {
      player.holdingD = false;

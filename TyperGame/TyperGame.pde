@@ -47,21 +47,35 @@ void draw() {
     {
       level++;
       zombiesinlevel = 12;
-      spawnrate -= 500;
+      spawnrate -= 250;
       createArrays();  
     }
     else if(level == 2)
     {
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 500;
+      spawnrate -= 250;
       createArrays();
     }
     else if(level == 3)
     {
       level++;  
       zombiesinlevel = 18;
-      spawnrate -= 500;
+      spawnrate -= 250;
+      createArrays();
+    }
+    else if(level == 4)
+    {
+      level++;  
+      zombiesinlevel = 18;
+      spawnrate -= 250;
+      createArrays();
+    } 
+    else if(level == 5)
+    {
+      level++;  
+      zombiesinlevel = 18;
+      spawnrate += 3000;
       createArrays();
     } 
   }
@@ -119,9 +133,9 @@ void draw() {
   pushStyle();
   fill(color(255));
   textSize(20);
-  text(typing, 15, 30); 
+  text(typing, player.x-textWidth(typing)/2, player.y+player.size); 
   popStyle();
-  
+
   //Health bar
   pushStyle();
   stroke(color(255), 100);
@@ -158,13 +172,6 @@ void draw() {
     iterator++;
   }
 
-  pushStyle();
-  fill(color(255));
-  textSize(20);
-  text(typing, 15, 30); 
-  popStyle();
-  
-  
   player.move();
   player.draw();
     

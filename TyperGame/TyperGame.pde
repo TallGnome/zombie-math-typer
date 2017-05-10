@@ -41,7 +41,7 @@ int state;
 static int player_image;
 boolean playsAmbience, playsScreenMusic;
 
-static final float MAX_HP = 5;
+static final float MAX_HP = 100;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT); 
@@ -101,7 +101,7 @@ void draw() {
     //Level text
     drawLevelDipslay();
     //Spawn rate text
-    drawSpawnRateDisplay();
+//    drawSpawnRateDisplay();
     //Zombies left text
     drawZombiesLeftDisplay();
     //User typing display
@@ -152,18 +152,18 @@ void draw() {
     image(loadImage("assets/welcome.jpg"), 0, 0, width, height);
     pushStyle();
     fill(color(200, 200, 200, 80));
-    rect(width/2-171, 35, 330, 85, 2);
+    rect(width/2-171, 35, 330, 70, 15);
     pushStyle();
     fill(255,100,100);
     textSize(32);
-    text("Typocalypse!!!", width/2 - 125, 70); 
+    text("Typocalypse!!!", width/2 - 110, 70); 
     fill(90);
     textSize(16);
     text("Math edition. (there is no other edition...)", width/2 - 165, 95); 
     //text("Math edition.", width/2 - 85, 75; 
     fill(0, 225, 0);    
     textSize(24);
-    text("Press ENTER to continue...", width/2 - 155, height/2); 
+    text("Press ENTER to continue...", width/2 - 155, height/2-150); 
   } 
   else if(state == END_STATE){
     if(!playsScreenMusic)
@@ -187,14 +187,14 @@ void draw() {
   else if(state == SELECTION_STATE){
     fill(0, 255, 0);    
     textSize(36);
-    text("Select a Character", width/2 - 80, 80);
+    text("Select a Character", width/2 - 150, 180);
     
-    image(loadImage("assets/MEMEMASTER1.png"), 250, height/2, 128, 128);
-    text("1", 260, height/2 + 132);
-    image(loadImage("assets/MEMEMASTER2.png"), width/2, height/2, 128, 128);
-    text("2", width/2 + 20, height/2 + 132);
-    image(loadImage("assets/MEMEMASTER3.png"), width - 250, height/2, 128, 128);
-    text("3", width - 270, height/2 + 132);  
+    image(loadImage("assets/MEMEMASTER1.png"), 140, height/2, 128, 128);
+    text("1", 194, height/2 + 160);
+    image(loadImage("assets/MEMEMASTER2.png"), 340, height/2, 128, 128);
+    text("2", 394, height/2 + 160);
+    image(loadImage("assets/MEMEMASTER3.png"), 540, height/2, 128, 128);
+    text("3", 594, height/2 + 160);  
   }
 }
 
@@ -206,9 +206,9 @@ void keyPressed(){
     if(looping){
       fill(255, 0 , 0);    
       textSize(42);
-      text("ARE YOU SURE YOU WANT TO EXIT?", width/2 - 320, height/2 - 50); 
+      text("ARE YOU SURE YOU WANT TO EXIT?", width/2 - 360, height/2 - 50); 
       textSize(28);
-      text("PRESS Y TO EXIT \n OR PRESS ESC TO CONTINUE", width/2 - 300, height/2);
+      text("PRESS ESC TO CONTINUE \n    OR PRESS Y TO EXIT", width/2 - 160, height/2);
       key = "Z".charAt(0);
       noLoop();
     }else{
@@ -287,7 +287,7 @@ void handleKeysForSelectionState(char k){
       player.changeImage(3);
       state = PLAY_STATE;    
     }break;
-    case default:
+    default:
     break;
   }
 }
@@ -427,18 +427,18 @@ void drawZombiesLeftDisplay(){
   fill(color(255));
   textSize(textsize);
   txt = "Zombies left: " + Integer.toString(zombiesinlevel); 
-  text(txt, width-textWidth(txt)-10, height - 3*textsize + 5); 
+  text(txt, width-textWidth(txt)-10, height - textsize + 5); 
   popStyle();
 }
 
-void drawSpawnRateDisplay(){
-  pushStyle();
-  fill(color(255));
-  textSize(textsize);
-  txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
-  text(txt, width-textWidth(txt)-10, height - 2*textsize + 5); 
-  popStyle();
-}
+//void drawSpawnRateDisplay(){
+//  pushStyle();
+//  fill(color(255));
+//  textSize(textsize);
+//  txt = "Spawn rate: " + Integer.toString(spawnrate/1000) + "s"; //milliseconds to seconds ignores the float part (i.e 2500ms to 2s)
+//  text(txt, width-textWidth(txt)-10, height - 3*textsize + 5); 
+//  popStyle();
+//}
 
 void drawStreakDisplay(){
   pushStyle();
@@ -459,7 +459,7 @@ void drawLevelDipslay(){
   fill(color(255));
   textSize(textsize);
   txt = "Level: " + Integer.toString(level);
-  text(txt, width-textWidth(txt)-width/70, height - textsize + 5); 
+  text(txt, width-textWidth(txt)-width/70, height - 2*textsize); 
   popStyle();
 }
 

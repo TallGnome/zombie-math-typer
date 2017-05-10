@@ -1,7 +1,7 @@
 public class Zombie
 {
-  //int first, second;
-  int x, y, size, solution, speed, txtSize, level;
+  int x, y, size, solution, txtSize, level, xMovement;
+  float speed;
   String equation;
   PImage picture;
   
@@ -15,21 +15,7 @@ public class Zombie
     y = size; 
     equation = eq;
     solution = result;
-    /*first = (int) random(1,9);
-    second = (int) random(1,9);
-    if(lvl == 1)
-    {
-      equation = first + " + " + second;
-      solution = first + second;
-    }
-    else
-    {
-      equation = first + " * " + second;
-      solution = first * second;
-    }*/
-    
-    
-    
+    xMovement = (int) random(-2,2);    
     txtSize = 20;
     level = lvl;
   }
@@ -37,6 +23,7 @@ public class Zombie
   void move()
   {
     y += speed;
+    x += xMovement;
   }
   
   void draw()
@@ -47,23 +34,23 @@ public class Zombie
     text(txt, x - textWidth(txt)/2, y + size/2+txtSize);
   }
   
-  int getSpeed(int lvl)
+  float getSpeed(int lvl)
   {
     switch (lvl)
     {
       case 1:
       { 
-        speed = (int) random(1,4);
+        speed = random(1,4);
       } 
       break;
       case 2:
       { 
-        speed = (int) random(1,5);
+        speed = random(2,4);
       } 
       break;
       case 3:
       { 
-        speed = (int) random(2,5);
+        speed = random(2,5);
       } 
       break;  
       default: 
@@ -71,6 +58,14 @@ public class Zombie
     }
     return speed;
   }
+  
+  float randomMovement(int x)
+  {
+    float r = random(-5, 5);
+    System.out.println(r);
+    return r;
+  }
+  
 }
   
   

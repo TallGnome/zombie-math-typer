@@ -13,8 +13,6 @@ public class Player{
   
   static final int MOVESPEED = 5;
   static final int PLAYERSIZE = 40;
-  static final float MAX_HP = 100;
-  static final float rectWidth = 200;
  
  Player(){
   

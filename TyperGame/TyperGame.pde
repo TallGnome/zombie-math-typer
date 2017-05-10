@@ -11,6 +11,7 @@ Equation eq;
 String[] equations;
 int[] results;
 
+static final float MAX_HP = 100;
 
 void setup() {
   size(800, 640); 
@@ -126,7 +127,7 @@ void draw() {
     zombies.get(i).move();
     
     // If the zombie reaches the end of the screen, deal damage and delete the zombie.
-    if( zombies.get(i).y == height - zombies.get(i).size ){
+    if( zombies.get(i).y > height - zombies.get(i).size ){
       player.health -= 5;
       zombies.remove(i);
     }
@@ -161,6 +162,13 @@ void draw() {
   rect(width/2-101, 15, 202, 40, 7);
   popStyle(); 
   pushStyle();
+  
+  if (player.health > MAX_HP){
+     player.health = MAX_HP;
+  }
+  if (player.health < 0){
+     player.health = 0; 
+  }
   if (player.health < 26){
     fill(255, 29, 0);
   }else if (player.health < 51){

@@ -7,17 +7,17 @@ public class Zombie
   
   Zombie(int lvl, String eq, int result)
   {
-    size = (int) random(40, 80);
-    speed = getSpeed(lvl);
-    picture = loadImage("assets/zombie.png");
-    picture.resize(size,size);
-    x = (int) random(0+size,width-size); //Zombie starts in a random horizontal position from the top of the screen.
-    y = size; 
-    equation = eq;
-    solution = result;
-    xMovement = (int) random(-2,2);    
-    txtSize = 20;
-    level = lvl;
+    this.size = (int) random(35, 90);
+    this.speed = getSpeed(lvl);
+    this.picture = loadImage("assets/zombie.png");
+    this.picture.resize(size,size);
+    this.x = (int) random(0+size,width-size); //Zombie starts in a random horizontal position from the top of the screen.
+    this.y = size; 
+    this.equation = eq;
+    this.solution = result;
+    this.xMovement = (int) random(-2,2);    
+    this.txtSize = 20;
+    this.level = lvl;
   }
   
   void move()

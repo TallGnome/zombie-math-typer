@@ -14,7 +14,7 @@ public class Zombie
     this.size = (int) random(40, 80);
     this.speed = getSpeed(lvl);
     //damage = getDamage(lvl);
-    if (random(-9,4) > 0){
+    if (random(-10,2) > 0){
         this.picture = loadImage("assets/zombie2.png");
      }
      else{
@@ -26,7 +26,7 @@ public class Zombie
     this.y = this.size; 
     this.equation = eq;
     this.solution = result;
-    this.xMovement = (int) random(-3,3);    
+    this.xMovement = (int) random(-2,2);    
     this.txtSize = 20;
     this.level = lvl;
 
@@ -74,30 +74,43 @@ public class Zombie
     {
       case 1:
       { 
-        this.speed = random(1,4);
+        this.speed = random(1,2);
       } 
       break;
       case 2:
       { 
-        this.speed = random(2,4);
+        this.speed = random(1,2);
       } 
       break;
       case 3:
       { 
-        this.speed = random(2,5);
+        this.speed = random(1,3);
+      } 
+      break;
+      case 4:
+      { 
+        this.speed = random(1,3);
       } 
       break;  
+      case 5:
+      { 
+        this.speed = random(2,3);
+      } 
+      break;  
+      case 6:
+      { 
+        this.speed = random(2,3);
+      } 
+      break;
+      case 7:
+      { 
+        this.speed = 1;
+      } 
+      break;     
       default: 
         break;
     }
     return this.speed;
-  }
-  
-  float randomMovement(int x)
-  {
-    float r = random(-5, 5);
-    System.out.println(r);
-    return r;
   }
   
 }

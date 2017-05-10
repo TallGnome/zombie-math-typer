@@ -447,19 +447,19 @@ void populateZombies(){
     else if(level == 2){
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 250;
+      spawnrate -= 300;
       createArrays();
     }
     else if(level == 3){
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 250;
+      spawnrate -= 300;
       createArrays();
     }
     else if(level == 4){
       level++;  
       zombiesinlevel = 15;
-      spawnrate -= 250;
+      spawnrate -= 300;
       createArrays();
     } 
     else if(level == 5){

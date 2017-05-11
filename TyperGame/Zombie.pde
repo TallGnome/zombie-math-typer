@@ -84,7 +84,7 @@ public class Zombie
       break;
       case 3:
       { 
-        this.speed = random(1,3);
+        this.speed = random(1,2);
       } 
       break;
       case 4:

@@ -21,6 +21,7 @@ static final int MAIN_STATE = 0;
 static final int SELECTION_STATE = 1;
 static final int PLAY_STATE = 2;
 static final int END_STATE = 3;
+static final int OPTIONS_STATE = 4;
 
 static final int WINDOW_WIDTH = 800;
 static final int WINDOW_HEIGHT = 640;
@@ -39,7 +40,7 @@ String[] equations;
 int[] results;
 int state;
 static int player_image;
-boolean playsAmbience, playsScreenMusic;
+boolean playsAmbience, playsScreenMusic, ambienceToggle, sfxToggle;
 
 static final float MAX_HP = 100;
 
@@ -59,6 +60,8 @@ void setup() {
   streak = 0; //Correct guesses in a row.
   streakgoal = 10; //What value streak count must reach to be able to clear screen.
   playsAmbience = false;
+  ambienceToggle = true;
+  sfxToggle = true;
   
   state = 0;
 
@@ -88,8 +91,11 @@ void draw() {
     {
       screenMusic.stop();
       playsScreenMusic = false;
-      ambience.loop();
-      ambience.setGain(-15.0);  
+      if(ambienceToggle)
+      {
+        ambience.loop();
+        ambience.setGain(-15.0);  
+      }
       playsAmbience = true;
     }
     
@@ -126,7 +132,10 @@ void draw() {
         }
         zombies.remove(i);
         streak = 0;
-        loseHP.trigger();
+        if(sfxToggle)
+        {
+          loseHP.trigger();
+        }
       }
     }
     
@@ -144,9 +153,15 @@ void draw() {
   else if(state == MAIN_STATE){
     if(!playsScreenMusic)
     {
-      ambience.pause();
+      if(ambienceToggle)
+      {
+        playsAmbience = false;
+      }
       playsAmbience = false;
-      screenMusic.trigger();
+      if(sfxToggle)
+      {
+        screenMusic.trigger();
+      }
       playsScreenMusic = true;
     }
     image(loadImage("assets/welcome.jpg"), 0, 0, width, height);
@@ -163,14 +178,22 @@ void draw() {
     //text("Math edition.", width/2 - 85, 75; 
     fill(0, 225, 0);    
     textSize(24);
-    text("Press ENTER to continue...", width/2 - 155, height/2-150); 
+    text("Press ENTER to Continue...", width/2 - 155, height/2-150); 
+    text("Press 'o' to Change Options", width/2 - 155, height/2-100); 
   } 
   else if(state == END_STATE){
     if(!playsScreenMusic)
     {
-      ambience.pause();
       playsAmbience = false;
-      screenMusic.trigger();
+      if(ambienceToggle)
+      {
+        ambience.pause();
+       
+      }
+      if(sfxToggle)
+      {
+        screenMusic.trigger();
+      }
       playsScreenMusic = true;
     }
     
@@ -184,7 +207,7 @@ void draw() {
     text("Press ENTER to exit", width/2 - 145, height/2 + 80);
     text("Press r to go to the main screen ", width/2 - 145, height/2 + 100);
   }
-  else if(state == SELECTION_STATE){
+  else if(state == SELECTION_STATE){  
     fill(0, 255, 0);    
     textSize(36);
     text("Select a Character", width/2 - 150, 180);
@@ -195,6 +218,24 @@ void draw() {
     text("2", 394, height/2 + 160);
     image(loadImage("assets/MEMEMASTER3.png"), 540, height/2, 128, 128);
     text("3", 594, height/2 + 160);  
+  }
+  else if(state == OPTIONS_STATE)
+  {
+    image(loadImage("assets/welcome.jpg"), 0, 0, width, height);
+    
+    
+    pushStyle();
+    fill(color(200, 200, 200, 80));
+    rect(50, 35, 700, 570, 15);
+    pushStyle();
+    fill(50, 0, 255);    
+    textSize(60);
+    text("Options", width/2 - 120, 100);
+    textSize(36);
+    text("Ambience: On/Off (Press 'm')", width/2 - 250, height/2 + 25);
+    text("SFX: On/Off (press 's')", width/2 - 180, height/2 + 65);
+    text("Press 'r' to go to the main screen ", width/2 - 280, height/2 + 105);
+    
   }
 }
 
@@ -240,6 +281,10 @@ void keyReleased(){
       state = MAIN_STATE;
     }
   }
+  else if(state == OPTIONS_STATE)
+  {
+    handleKeysForOptionsState(key);
+  }
   else if(state == SELECTION_STATE){
     handleKeysForSelectionState(key);
   }
@@ -256,7 +301,10 @@ boolean checkAnswer(String answer){
       zombies.remove(i);
       correct = true;
       player.health += 2.5;
-      zombieDeath.trigger();
+      if(sfxToggle)
+      {
+        zombieDeath.trigger();
+      }
     }
   }
   return correct;
@@ -267,9 +315,54 @@ void handleKeysForMainState(char k){
     case ENTER:{
       state = SELECTION_STATE;
     }break;
+    case ('O'):
+    {
+      state = OPTIONS_STATE;
+      break;
+    }
+    case ('o'):
+    {
+      state = OPTIONS_STATE;
+      break;
+    }
     case 'P':{
       
     }break;    
+  }
+}
+
+void handleKeysForOptionsState(char k)
+{
+  switch (k){
+    case ('m'):
+    {
+      if(ambienceToggle)
+      {
+        ambienceToggle = false;
+      }
+      else
+      {
+        ambienceToggle = true;
+      }
+      break;
+    }
+    case ('s'):
+    {
+      if(sfxToggle)
+      {
+        sfxToggle = false;
+      }
+      else
+      {
+        sfxToggle = true;
+      }
+      break;
+    }
+    case('r'):
+    {
+      state = MAIN_STATE;
+    }
+ 
   }
 }
 
@@ -405,10 +498,13 @@ void drawZombies(){
       zombies.add(newzombie);
       starttime = currtime;
       iterator++;
-      zombieSpawn.trigger();
-      if (random(-10,1) > 0){
-        background(100);
-        thunder.trigger();
+      if(sfxToggle)
+      {
+        zombieSpawn.trigger();
+        if (random(-10,1) > 0){
+          background(100);
+          thunder.trigger();
+        }
       }
     }
     

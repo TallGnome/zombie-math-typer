@@ -64,8 +64,9 @@ public class Zombie
     image(this.picture, this.x-this.size/2, this.y-this.size/2);
     String txt = this.equation;
     textSize(txtSize);
-    text(txt, this.x - textWidth(txt)/2, this.y + this.size/2+txtSize);
-
+    if(txt != null){
+      text(txt, this.x - textWidth(txt)/2, this.y + this.size/2+txtSize);
+    }
   }
   
   float getSpeed(int lvl)

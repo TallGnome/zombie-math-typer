@@ -48,7 +48,25 @@ void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT); 
   frameRate(144);
   
-  level = 1;
+
+  initializeGame();
+  
+  
+  minim = new Minim(this);
+
+  zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
+  zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
+  loseHP = minim.loadSample("assets/audio/losehp.mp3");
+  screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
+  thunder = minim.loadSample("assets/audio/thunder.mp3");
+  
+  ambience = minim.loadFile("assets/audio/ambience.mp3");
+
+   
+}
+
+void initializeGame(){
+    level = 1;
   player = new Player();
   zombiesinlevel = 10;
   zombies = new ArrayList<Zombie>();
@@ -64,20 +82,8 @@ void setup() {
   sfxToggle = true;
   
   state = 0;
-
+  
   createArrays();
-  
-  minim = new Minim(this);
-
-  zombieDeath = minim.loadSample("assets/audio/zdeath.mp3");
-  zombieSpawn = minim.loadSample("assets/audio/zspawn.mp3");
-  loseHP = minim.loadSample("assets/audio/losehp.mp3");
-  screenMusic = minim.loadSample("assets/audio/screenmusic.mp3");
-  thunder = minim.loadSample("assets/audio/thunder.mp3");
-  
-  ambience = minim.loadFile("assets/audio/ambience.mp3");
-
-   
 }
 
 void draw() {
@@ -245,12 +251,14 @@ void keyPressed(){
     }
   if(key == ESC || key == 'p'){
     if(looping){
+      pushStyle();
       fill(255, 0 , 0);    
       textSize(42);
       text("ARE YOU SURE YOU WANT TO EXIT?", width/2 - 360, height/2 - 50); 
       textSize(28);
       text("PRESS ESC TO CONTINUE \n    OR PRESS Y TO EXIT", width/2 - 160, height/2);
       key = "Z".charAt(0);
+      popStyle();
       noLoop();
     }else{
       loop();
@@ -279,6 +287,7 @@ void keyReleased(){
     }
     else if (key == 'r' || key == 'R'){
       state = MAIN_STATE;
+      initializeGame();
     }
   }
   else if(state == OPTIONS_STATE)

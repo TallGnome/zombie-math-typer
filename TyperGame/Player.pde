@@ -50,10 +50,10 @@ public class Player{
  }
 
 void move(){
-  if(this.holdingA){
+  if(this.holdingA && this.getX() > 0){
     this.x -= PLAYERSPEED;
   }
-  if(this.holdingD){
+  if(this.holdingD && this.getX() < width){
     this.x += PLAYERSPEED;
   }
 }
